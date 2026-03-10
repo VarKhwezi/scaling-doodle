@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khwezi Shezi — Software Engineer</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        mono:    ['"JetBrains Mono"', 'monospace'],
+        display: ['Syne', 'sans-serif'],
+      },
+      keyframes: {
+        'up':    { '0%':{ opacity:'0', transform:'translateY(24px)' }, '100%':{ opacity:'1', transform:'translateY(0)' } },
+        'fade':  { '0%':{ opacity:'0' }, '100%':{ opacity:'1' } },
+        'drift': { '0%,100%':{ transform:'translateY(0px)' }, '50%':{ transform:'translateY(-14px)' } },
+        'ping2': { '75%,100%':{ transform:'scale(2)', opacity:'0' } },
+      },
+      animation: {
+        'up':     'up 0.85s cubic-bezier(0.16,1,0.3,1) both',
+        'up1':    'up 0.85s cubic-bezier(0.16,1,0.3,1) 0.10s both',
+        'up2':    'up 0.85s cubic-bezier(0.16,1,0.3,1) 0.20s both',
+        'up3':    'up 0.85s cubic-bezier(0.16,1,0.3,1) 0.32s both',
+        'fade':   'fade 0.9s ease both',
+        'drift':  'drift 7s ease-in-out infinite',
+        'ping2':  'ping2 1s cubic-bezier(0,0,0.2,1) infinite',
+      },
+    }
+  }
+}
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:14px}
+
+/* ── TOKENS ───────────────────────────────────────────── */
+:root{
+  --bg:    #0f0b08;
+  --bg2:   #160e09;
+  --clay:  #c8724a;
+  --ember: #e8632a;
+  --gold:  #d4a843;
+  --sand:  #ede0cc;
+  --smoke: #7a6a5e;
+  --dim:   #2e1e14;
+  --green: #58bf58;
+  --sw:    400ms;
+}
+/* Themes on body */
+body.t-gold  { --clay:#c49a30; --ember:#dab040; --gold:#f0cc70; --sand:#f0e8d0; --smoke:#8a7a50; --dim:#3a2e10; }
+body.t-moss  { --clay:#5a8a50; --ember:#4a7042; --gold:#80c060; --sand:#ddeedd; --smoke:#608060; --dim:#1a2e18; }
+body.t-sky   { --clay:#4880c0; --ember:#3870b0; --gold:#70a8e0; --sand:#d8e8f8; --smoke:#5878a0; --dim:#102038; }
+body.t-night { --clay:#9060d0; --ember:#7848c8; --gold:#b890f0; --sand:#e8e0f8; --smoke:#706090; --dim:#1a1030; --bg:#0a0812; --bg2:#100e18; }
+
+body {
+  background:var(--bg);
+  color:var(--sand);
+  font-family:'JetBrains Mono',monospace;
+  overflow-x:hidden;
+}
+/* Grain */
+body::before {
+  content:''; position:fixed; inset:0; z-index:9999; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity:0.5;
+}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--clay);border-radius:2px}
+
+/* ── TRANSITION OVERLAY ──────────────────────────────── */
+#tx{position:fixed;inset:0;z-index:99998;pointer-events:none;background:var(--bg);opacity:0}
+@keyframes tx-go{0%{opacity:0}22%{opacity:.72}100%{opacity:0}}
+#tx.go{animation:tx-go var(--sw) ease forwards}
+
+/* ── MODE BUTTON ─────────────────────────────────────── */
+#mode-btn{
+  position:fixed;top:14px;right:16px;z-index:99999;
+  display:flex;align-items:center;gap:6px;
+  padding:5px 13px 5px 10px;border-radius:5px;
+  border:1px solid var(--clay);
+  background:var(--bg);color:var(--clay);
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;font-weight:700;letter-spacing:.06em;
+  cursor:pointer;user-select:none;transition:all 120ms ease;
+}
+#mode-btn:hover{background:var(--clay);color:var(--bg)}
+body.gui-mode #mode-btn{border-color:rgba(237,224,204,.18);background:rgba(237,224,204,.06);color:rgba(237,224,204,.5)}
+body.gui-mode #mode-btn:hover{background:rgba(237,224,204,.12);color:var(--sand)}
+
+/* ── TUI ─────────────────────────────────────────────── */
+#tui-layer{
+  position:fixed;inset:0;display:flex;flex-direction:column;
+  font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.5;
+  color:var(--sand);z-index:50;background:var(--bg);
+  transition:opacity var(--sw) ease,transform var(--sw) cubic-bezier(.4,0,.2,1);
+}
+body.gui-mode #tui-layer{opacity:0;pointer-events:none;transform:scale(.97)}
+#tui-layer::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+  background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.045) 2px,rgba(0,0,0,.045) 3px);
+}
+body.gui-mode #tui-layer::after{opacity:0}
+
+.fr-row{white-space:pre;flex-shrink:0;display:block;line-height:1.5;overflow:hidden}
+.fa{color:var(--clay)} .fd{color:var(--smoke)} .ff{color:var(--sand)} .fb{color:var(--sand);font-weight:700}
+.fy{color:var(--gold)} .fs{color:var(--green)}
+.thl{background:var(--clay);color:var(--bg);font-weight:700}
+.thlb{outline:1px solid var(--clay);outline-offset:-1px;color:var(--clay);font-weight:700}
+
+#tui-main{display:flex;flex:1;min-height:0;overflow:hidden}
+.tsb{white-space:pre;color:var(--clay);flex-shrink:0;line-height:1.5}
+#tui-menu{width:22ch;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;padding-top:.25em;background:rgba(8,4,2,.55)}
+.mi{white-space:pre;cursor:pointer;line-height:1.5;padding:0 1ch;color:var(--smoke);user-select:none;transition:color 55ms}
+.mi.act{background:var(--clay);color:var(--bg);font-weight:700}
+.mi:hover:not(.act){color:var(--sand)}
+.mi-sep{height:1px;margin:6px 1ch 3px;background:var(--dim);flex-shrink:0}
+.mi-hdr{white-space:pre;padding:.3em 1ch .1em;color:var(--smoke);font-size:.72em;letter-spacing:.12em;line-height:1.5;flex-shrink:0}
+#tui-content{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--smoke) var(--bg);padding:.75em 3ch 3em;background:rgba(6,3,1,.65)}
+.cl{display:block;white-space:pre;min-height:1.5em;line-height:1.5}
+.ca{color:var(--clay)} .cd{color:var(--smoke)} .cb{color:var(--sand);font-weight:700}
+.cy{color:var(--gold)} .cs{color:var(--green)} .cf{color:var(--sand)} .bk{font-weight:700}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.cursor{animation:blink 1s step-end infinite}
+
+/* ── GUI ─────────────────────────────────────────────── */
+#gui-layer{
+  position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;
+  opacity:0;pointer-events:none;transform:scale(1.01);
+  transition:opacity var(--sw) ease,transform var(--sw) cubic-bezier(.4,0,.2,1);
+  font-family:'JetBrains Mono',monospace;
+  scrollbar-width:thin;scrollbar-color:rgba(200,114,74,.18) transparent;
+}
+body.gui-mode #gui-layer{opacity:1;pointer-events:auto;transform:scale(1)}
+
+/* Skill bar */
+.sbar{transform-origin:left;transform:scaleX(0);transition:transform 1.1s cubic-bezier(.16,1,.3,1)}
+/* Card */
+.card{transition:transform 200ms ease,border-color 200ms ease}
+.card:hover{transform:translateY(-2px)}
+/* Divider */
+.div{height:1px;background:linear-gradient(90deg,rgba(200,114,74,.35),transparent)}
+/* Dot grid */
+.dot-bg{background-image:radial-gradient(circle,rgba(200,114,74,.055) 1px,transparent 1px);background-size:24px 24px}
+</style>
+</head>
+<body>
+
+<button id="mode-btn"><span id="mode-icon">⊞</span><span id="mode-label">GUI</span></button>
+<div id="tx"></div>
+
+<!-- ══════ TUI ══════ -->
+<div id="tui-layer">
+  <div id="tt"  class="fr-row"></div>
+  <div id="ts"  class="fr-row"></div>
+  <div id="tm"  class="fr-row"></div>
+  <div id="tui-main">
+    <span class="tsb">│</span>
+    <div id="tui-menu"></div>
+    <span class="tsb">│</span>
+    <div id="tui-content"></div>
+    <span class="tsb">│</span>
+  </div>
+  <div id="tb1" class="fr-row"></div>
+  <div id="tk"  class="fr-row"></div>
+  <div id="tb2" class="fr-row"></div>
+</div>
+
+<!-- ══════ GUI ══════ -->
+<div id="gui-layer" style="background:var(--bg)">
+
+  <!-- Atmosphere -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden">
+    <div class="absolute -top-40 -left-40 w-[720px] h-[720px] rounded-full opacity-[0.11] animate-drift"
+         style="background:radial-gradient(circle,var(--ember) 0%,transparent 68%);filter:blur(2px)"></div>
+    <div class="absolute top-0 right-0 w-[380px] h-[380px] rounded-full opacity-[0.06]"
+         style="background:radial-gradient(circle,var(--gold),transparent 70%);transform:translate(38%,-28%)"></div>
+    <div class="dot-bg absolute inset-0 opacity-90"></div>
+    <div class="absolute inset-x-0 bottom-0 h-48 pointer-events-none"
+         style="background:linear-gradient(to top,var(--bg),transparent)"></div>
+  </div>
+
+  <!-- NAV -->
+  <header class="sticky top-0 z-50">
+    <nav class="relative flex items-center gap-1 px-6 sm:px-12 h-[52px]"
+         style="background:rgba(15,11,8,.84);backdrop-filter:blur(20px)">
+      <div class="absolute inset-x-0 bottom-0 h-px"
+           style="background:linear-gradient(90deg,transparent,rgba(200,114,74,.2) 28%,rgba(200,114,74,.2) 72%,transparent)"></div>
+
+      <!-- Logo -->
+      <div class="flex items-center gap-3 mr-5 shrink-0">
+        <div class="w-7 h-7 rounded flex items-center justify-center font-mono text-[11px] font-bold"
+             style="background:var(--clay);color:var(--bg)">KS</div>
+        <span class="font-mono font-semibold text-[12px] hidden sm:block" style="color:var(--sand)">khwezi.shezi</span>
+      </div>
+
+      <!-- Links -->
+      <div class="flex items-center gap-0.5 flex-1" id="gui-nav">
+        <button data-sec="0" class="gnl px-3.5 py-1.5 rounded font-mono text-[11px] font-medium transition-all"
+                style="background:rgba(200,114,74,.12);color:var(--sand)">.about()</button>
+        <button data-sec="1" class="gnl px-3.5 py-1.5 rounded font-mono text-[11px] font-medium transition-all"
+                style="color:rgba(237,224,204,.33)">.skills()</button>
+        <button data-sec="2" class="gnl px-3.5 py-1.5 rounded font-mono text-[11px] font-medium transition-all"
+                style="color:rgba(237,224,204,.33)">.projects()</button>
+        <button data-sec="3" class="gnl px-3.5 py-1.5 rounded font-mono text-[11px] font-medium transition-all"
+                style="color:rgba(237,224,204,.33)">.contact()</button>
+      </div>
+
+      <!-- Available badge -->
+      <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded font-mono text-[10px] font-bold tracking-[.1em] uppercase border"
+           style="border-color:rgba(88,191,88,.22);background:rgba(88,191,88,.05);color:rgba(88,191,88,.75)">
+        <span class="relative flex w-1.5 h-1.5">
+          <span class="animate-ping2 absolute inset-0 rounded-full opacity-60" style="background:rgba(88,191,88,.8)"></span>
+          <span class="relative rounded-full w-1.5 h-1.5" style="background:var(--green)"></span>
+        </span>
+        available
+      </div>
+    </nav>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="relative z-10 max-w-[880px] mx-auto px-6 sm:px-12">
+
+    <!-- ── HERO ───────────────────────────────────────── -->
+    <section id="gui-s0" class="pt-24 pb-24">
+
+      <div class="flex items-center gap-3 mb-7 animate-up">
+        <div class="h-px w-6" style="background:var(--clay)"></div>
+        <span class="font-mono text-[10px] font-semibold tracking-[.22em] uppercase" style="color:var(--clay)">
+          software_engineer · cape_town, za
+        </span>
+      </div>
+
+      <h1 class="font-display font-extrabold leading-[.87] tracking-[-0.02em] mb-7 animate-up1"
+          style="font-size:clamp(54px,9vw,112px)">
+        <span class="block" style="color:var(--sand)">Khwezi</span>
+        <span class="block" style="color:var(--clay)">Shezi<span style="color:var(--gold)">.</span></span>
+      </h1>
+
+      <p class="font-mono text-[10px] font-medium tracking-[.24em] uppercase mb-14 animate-up2"
+         style="color:var(--smoke)">full_stack &nbsp;/&nbsp; mobile &nbsp;/&nbsp; data_engineering</p>
+
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_234px] gap-10 animate-up3">
+
+        <!-- Bio + CTAs -->
+        <div>
+          <p class="font-mono text-[13px] font-light leading-[1.95] mb-10 max-w-[440px]"
+             style="color:rgba(237,224,204,.46)">
+            A software engineer driven by a passion for problem-solving
+            through creativity and innovation. I excel in collaborative
+            environments, building impactful solutions that matter.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="#gui-s3"
+               onclick="document.getElementById('gui-s3').scrollIntoView({behavior:'smooth'});return false"
+               class="group inline-flex items-center gap-2 px-5 py-2.5 rounded font-mono font-bold text-[11px] tracking-[.05em] uppercase transition-all duration-200 hover:scale-[1.02] active:scale-[.98]"
+               style="background:var(--clay);color:var(--bg);box-shadow:0 0 32px -10px var(--ember)">
+              connect()
+              <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="#gui-s2"
+               onclick="document.getElementById('gui-s2').scrollIntoView({behavior:'smooth'});return false"
+               class="inline-flex items-center gap-2 px-5 py-2.5 rounded font-mono font-medium text-[11px] tracking-[.05em] uppercase border transition-all duration-200"
+               style="border-color:rgba(237,224,204,.1);color:rgba(237,224,204,.4);background:rgba(237,224,204,.03)"
+               onmouseover="this.style.borderColor='rgba(200,114,74,.28)';this.style.color='rgba(237,224,204,.7)'"
+               onmouseout="this.style.borderColor='rgba(237,224,204,.1)';this.style.color='rgba(237,224,204,.4)'">
+              projects()
+            </a>
+          </div>
+        </div>
+
+        <!-- Stat cards -->
+        <div class="flex flex-col gap-2">
+          <div class="relative overflow-hidden rounded-lg p-4 card"
+               style="background:rgba(237,224,204,.03);border:1px solid rgba(237,224,204,.07)">
+            <div class="font-mono text-[9px] font-semibold tracking-[.2em] uppercase mb-1.5" style="color:var(--smoke)">// education</div>
+            <div class="font-mono font-bold text-[13px] mb-0.5" style="color:var(--sand)">WethinkCode_</div>
+            <div class="font-mono text-[11px] font-light" style="color:var(--smoke)">Software Engineering</div>
+          </div>
+          <div class="relative overflow-hidden rounded-lg p-4 card"
+               style="background:rgba(237,224,204,.03);border:1px solid rgba(237,224,204,.07)">
+            <div class="font-mono text-[9px] font-semibold tracking-[.2em] uppercase mb-1.5" style="color:var(--smoke)">// experience</div>
+            <div class="font-mono font-bold text-[13px] mb-0.5" style="color:var(--sand)">MTN · Intern</div>
+            <div class="font-mono text-[11px] font-light" style="color:var(--smoke)">Software Solutions Engineering</div>
+          </div>
+          <div class="relative overflow-hidden rounded-lg p-4 card"
+               style="background:rgba(200,114,74,.07);border:1px solid rgba(200,114,74,.2)">
+            <div class="absolute -top-3 -right-3 w-20 h-20 rounded-full blur-2xl opacity-22"
+                 style="background:var(--clay)"></div>
+            <div class="flex items-center gap-2 mb-1.5">
+              <span class="relative flex w-1.5 h-1.5">
+                <span class="animate-ping2 absolute inset-0 rounded-full opacity-55" style="background:var(--green)"></span>
+                <span class="relative rounded-full w-1.5 h-1.5" style="background:var(--green)"></span>
+              </span>
+              <div class="font-mono text-[9px] font-semibold tracking-[.2em] uppercase" style="color:var(--smoke)">// status</div>
+            </div>
+            <div class="font-mono font-bold text-[13px] mb-0.5" style="color:var(--green)">open_to_work()</div>
+            <div class="font-mono text-[11px] font-light" style="color:var(--smoke)">junior–mid level roles</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SKILLS ─────────────────────────────────────── -->
+    <section id="gui-s1" class="py-20">
+      <div class="div mb-14"></div>
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <p class="font-mono text-[10px] font-semibold tracking-[.22em] uppercase mb-3" style="color:var(--clay)">// 01 — skills</p>
+          <h2 class="font-display font-extrabold text-[34px] sm:text-[44px] leading-[.92] tracking-tight" style="color:var(--sand)">
+            Technical<br><span style="color:var(--clay)">Stack.</span>
+          </h2>
+        </div>
+        <p class="hidden sm:block font-mono text-[10px] text-right leading-relaxed" style="color:rgba(237,224,204,.18)">
+          6 domains<br>across the stack
+        </p>
+      </div>
+      <div id="gui-skills" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
+    </section>
+
+    <!-- ── PROJECTS ───────────────────────────────────── -->
+    <section id="gui-s2" class="py-20">
+      <div class="div mb-14"></div>
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <p class="font-mono text-[10px] font-semibold tracking-[.22em] uppercase mb-3" style="color:var(--clay)">// 02 — projects</p>
+          <h2 class="font-display font-extrabold text-[34px] sm:text-[44px] leading-[.92] tracking-tight" style="color:var(--sand)">
+            Built &amp;<br><span style="color:var(--clay)">Shipped.</span>
+          </h2>
+        </div>
+        <p class="hidden sm:block font-mono text-[10px] text-right leading-relaxed" style="color:rgba(237,224,204,.18)">
+          3 projects<br>shipped to prod
+        </p>
+      </div>
+      <div id="gui-projects" class="flex flex-col gap-2.5"></div>
+    </section>
+
+    <!-- ── CONTACT ────────────────────────────────────── -->
+    <section id="gui-s3" class="py-20">
+      <div class="div mb-14"></div>
+      <div class="mb-10">
+        <p class="font-mono text-[10px] font-semibold tracking-[.22em] uppercase mb-3" style="color:var(--clay)">// 03 — contact</p>
+        <h2 class="font-display font-extrabold text-[34px] sm:text-[44px] leading-[.92] tracking-tight mb-5" style="color:var(--sand)">
+          Let's<br><span style="color:var(--clay)">Talk.</span>
+        </h2>
+        <p class="font-mono text-[13px] font-light max-w-xs leading-[1.9]" style="color:rgba(237,224,204,.34)">
+          Excited to collaborate on meaningful problems.<br>
+          Reach out — always up for a conversation.
+        </p>
+      </div>
+      <div id="gui-contact" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-4"></div>
+
+      <!-- CTA card -->
+      <div class="relative overflow-hidden rounded-xl p-8 sm:p-10 mt-3"
+           style="background:rgba(200,114,74,.07);border:1px solid rgba(200,114,74,.2)">
+        <div class="absolute -right-10 -bottom-10 w-52 h-52 rounded-full blur-3xl opacity-18" style="background:var(--ember)"></div>
+        <div class="relative z-10">
+          <div class="flex items-center gap-2.5 mb-4">
+            <span class="relative flex w-2 h-2">
+              <span class="animate-ping2 absolute inset-0 rounded-full opacity-50" style="background:var(--green)"></span>
+              <span class="relative rounded-full w-2 h-2" style="background:var(--green)"></span>
+            </span>
+            <span class="font-mono text-[10px] font-semibold tracking-[.1em] uppercase" style="color:var(--green)">// currently_available</span>
+          </div>
+          <p class="font-mono text-[13px] font-light leading-[1.9] max-w-md mb-7" style="color:rgba(237,224,204,.56)">
+            Open to junior and mid-level engineering roles.
+            I bring collaborative energy, curiosity, and a drive to
+            grow fast. Let's build something that matters.
+          </p>
+          <a href="https://www.linkedin.com/in/khwezi-shezi-a88714268/" target="_blank"
+             class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded font-mono font-bold text-[11px] tracking-[.05em] uppercase transition-all duration-200 hover:scale-[1.02] active:scale-[.98]"
+             style="background:var(--clay);color:var(--bg);box-shadow:0 0 28px -8px var(--ember)">
+            connect_on_linkedin()
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="relative z-10 pb-10 mt-2">
+    <div class="div mb-7 mx-6 sm:mx-12"></div>
+    <div class="max-w-[880px] mx-auto px-6 sm:px-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-5 h-5 rounded flex items-center justify-center font-mono text-[9px] font-bold"
+             style="background:var(--clay);color:var(--bg)">KS</div>
+        <span class="font-mono text-[11px]" style="color:rgba(237,224,204,.28)">Khwezi Shezi</span>
+      </div>
+      <div class="font-mono text-[10px] tracking-[.08em]" style="color:rgba(237,224,204,.14)">
+        JetBrains Mono · Syne · Tailwind · Vanilla JS
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /gui-layer -->
+
+<script>
+'use strict'
+
+/* ═══ DATA ═══════════════════════════════════════════════ */
+const P = {
+  name:'KHWEZI SHEZI', version:'v1.0.0', os:'DEV-OS', uptime:Date.now(),
+  about:{
+    ascii:[
+      ' ██╗  ██╗██╗  ██╗██╗    ██╗███████╗███████╗██╗',
+      ' ██║ ██╔╝██║  ██║██║    ██║██╔════╝╚══███╔╝██║',
+      ' █████╔╝ ███████║██║ █╗ ██║█████╗    ███╔╝ ██║',
+      ' ██╔═██╗ ██╔══██║██║███╗██║██╔══╝   ███╔╝  ██║',
+      ' ██║  ██╗██║  ██║╚███╔███╔╝███████╗███████╗██║',
+      ' ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝╚══════╝╚══════╝╚═╝',
+    ],
+    tagline:'Software Engineer · Cape Town, South Africa',
+    bio:[
+      'Driven by a passion for problem-solving through creativity',
+      'and innovation. I excel in collaborative environments,',
+      'delivering impactful, lasting solutions.',
+    ],
+    education:'WethinkCode_  —  Software Engineering Graduate',
+    experience:'MTN · Software Solutions · Software Engineering Intern',
+    location:'Cape Town, Western Cape, South Africa',
+    status:'[ open to junior / mid-level engineering roles ]',
+  },
+  skills:[
+    {name:'Languages',      level:80, items:['Python','Java','JavaScript','TypeScript','Bash','SQL']},
+    {name:'Frontend',       level:75, items:['React','React Native','HTML/CSS','Front-End Dev']},
+    {name:'Backend',        level:70, items:['Node.js','REST APIs','SQL Databases','Jupyter']},
+    {name:'DevOps / Tools', level:68, items:['Docker','Git','GitHub','GitLab','Postman']},
+    {name:'Data Eng.',      level:65, items:['Pandas','SQL','Jupyter','Pipelines']},
+    {name:'Concepts',       level:72, items:['TDD','Agile','OOP','CI/CD','System Design']},
+  ],
+  projects:[
+    {name:'ALIEN INVASION GAME', lang:'Python',  desc:'Arcade-style space shooter — Pygame, game loop, collision detection, scoring & progression system', status:'complete'},
+    {name:'QR CODE TOOL',        lang:'Python',  desc:'QR code generator & reader with customisable output formats and batch processing capability',        status:'complete'},
+    {name:'PORTFOLIO SITE',      lang:'HTML/JS', desc:'Dual-mode TUI / GUI portfolio with theme switching, keyboard navigation, zero build step',           status:'active'},
+  ],
+  contact:[
+    {label:'LinkedIn', value:'linkedin.com/in/khwezi-shezi',  hint:'Best for professional reach', icon:'◈', href:'https://www.linkedin.com/in/khwezi-shezi-a88714268/'},
+    {label:'GitHub',   value:'github.com/VarKhwezi',          hint:'Code & contributions',        icon:'⌥', href:'https://github.com/VarKhwezi'},
+    {label:'Location', value:'Cape Town, WC, SA',             hint:'Remote-friendly',             icon:'◎', href:null},
+  ],
+}
+
+const THEMES=[
+  {cls:'t-ember',name:'Ember'},
+  {cls:'t-gold', name:'Gold'},
+  {cls:'t-moss', name:'Moss'},
+  {cls:'t-sky',  name:'Sky'},
+  {cls:'t-night',name:'Night'},
+]
+const SECTIONS=[
+  {label:'About',   icon:'◉'},
+  {label:'Skills',  icon:'◈'},
+  {label:'Projects',icon:'◆'},
+  {label:'Contact', icon:'◎'},
+  {label:'Help',    icon:'?'},
+]
+const MENU_W=22
+
+/* ═══ STATE ══════════════════════════════════════════════ */
+const S={mode:'tui',themeIdx:0,section:0,cmdMode:false,cmdBuf:'',cpu:22,mem:38}
+
+/* ═══ DOM ════════════════════════════════════════════════ */
+const $=id=>document.getElementById(id)
+const modeIcon=$('mode-icon'), modeLabel=$('mode-label'), txEl=$('tx')
+const tt=$('tt'), ts=$('ts'), tm=$('tm')
+const tuiMenu=$('tui-menu'), tuiContent=$('tui-content')
+const tb1=$('tb1'), tk=$('tk'), tb2=$('tb2')
+const guiLayer=$('gui-layer')
+
+/* ═══ MODE ═══════════════════════════════════════════════ */
+function flash(){txEl.classList.remove('go');void txEl.offsetWidth;txEl.classList.add('go')}
+function switchMode(to){
+  if(S.mode===to)return; S.mode=to; flash()
+  if(to==='gui'){
+    document.body.classList.add('gui-mode')
+    modeIcon.textContent='⊟'; modeLabel.textContent='TUI'
+    setTimeout(animateBars,360)
+  } else {
+    document.body.classList.remove('gui-mode')
+    modeIcon.textContent='⊞'; modeLabel.textContent='GUI'
+    renderTui()
+  }
+}
+$('mode-btn').addEventListener('click',()=>switchMode(S.mode==='tui'?'gui':'tui'))
+
+/* ═══ GUI BUILD ══════════════════════════════════════════ */
+function buildGui(){
+  /* Skills */
+  $('gui-skills').innerHTML=P.skills.map(s=>`
+    <div class="group relative rounded-lg overflow-hidden card"
+         style="background:rgba(237,224,204,.03);border:1px solid rgba(237,224,204,.07)">
+      <div class="absolute inset-x-0 top-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+           style="background:linear-gradient(90deg,transparent,var(--clay),transparent)"></div>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-3">
+          <span class="font-mono text-[10px] font-semibold tracking-[.14em] uppercase"
+                style="color:rgba(237,224,204,.36)">${s.name}</span>
+          <span class="font-mono text-[12px] font-bold tabular-nums"
+                style="color:var(--clay)">${s.level}<span class="text-[9px] opacity-55">%</span></span>
+        </div>
+        <div class="h-[2px] rounded-full mb-4 overflow-hidden" style="background:rgba(237,224,204,.06)">
+          <div class="sbar h-full rounded-full"
+               style="background:linear-gradient(90deg,var(--clay),var(--gold));width:${s.level}%"></div>
+        </div>
+        <div class="flex flex-wrap gap-1.5">
+          ${s.items.map(t=>`
+            <span class="font-mono px-2 py-[3px] rounded text-[10px] font-medium cursor-default transition-all duration-150"
+                  style="background:rgba(237,224,204,.04);color:rgba(237,224,204,.28);border:1px solid rgba(237,224,204,.06)"
+                  onmouseover="this.style.background='rgba(200,114,74,.1)';this.style.color='rgba(237,224,204,.7)';this.style.borderColor='rgba(200,114,74,.22)'"
+                  onmouseout="this.style.background='rgba(237,224,204,.04)';this.style.color='rgba(237,224,204,.28)';this.style.borderColor='rgba(237,224,204,.06)'"
+                  >${t}</span>`).join('')}
+        </div>
+      </div>
+      <div class="absolute inset-x-0 bottom-0 h-[2px] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"
+           style="background:linear-gradient(90deg,var(--clay),transparent)"></div>
+    </div>`).join('')
+
+  /* Projects */
+  const SC={
+    active:  {dot:'var(--green)',text:'var(--green)',bg:'rgba(88,191,88,.07)', border:'rgba(88,191,88,.18)', label:'active'},
+    complete:{dot:'var(--clay)', text:'var(--clay)', bg:'rgba(200,114,74,.07)',border:'rgba(200,114,74,.2)', label:'complete'},
+    archived:{dot:'rgba(237,224,204,.2)',text:'rgba(237,224,204,.27)',bg:'rgba(237,224,204,.03)',border:'rgba(237,224,204,.08)',label:'archived'},
+  }
+  $('gui-projects').innerHTML=P.projects.map(p=>{
+    const sc=SC[p.status]||SC.archived
+    return `
+    <div class="group relative rounded-lg overflow-hidden card"
+         style="background:rgba(237,224,204,.03);border:1px solid rgba(237,224,204,.07)">
+      <div class="absolute left-0 inset-y-0 w-[2px] scale-y-0 group-hover:scale-y-100 origin-center transition-transform duration-280"
+           style="background:var(--clay)"></div>
+      <div class="p-5 pl-6">
+        <div class="flex flex-col sm:flex-row sm:items-start gap-3">
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-2.5">
+              <span class="font-mono font-bold text-[12px] tracking-[.04em]"
+                    style="color:var(--sand)">${p.name}</span>
+              <span class="inline-flex items-center gap-1.5 px-2 py-[3px] rounded font-mono text-[9px] font-bold tracking-[.1em] uppercase"
+                    style="background:${sc.bg};border:1px solid ${sc.border};color:${sc.text}">
+                <span class="w-1 h-1 rounded-full" style="background:${sc.dot}"></span>${sc.label}
+              </span>
+            </div>
+            <p class="font-mono text-[12px] font-light leading-[1.75]"
+               style="color:rgba(237,224,204,.35)">${p.desc}</p>
+          </div>
+          <span class="font-mono text-[10px] font-medium px-2 py-[3px] rounded shrink-0"
+                style="background:rgba(237,224,204,.05);color:rgba(237,224,204,.27);border:1px solid rgba(237,224,204,.07)">${p.lang}</span>
+        </div>
+      </div>
+    </div>`
+  }).join('')
+
+  /* Contact */
+  $('gui-contact').innerHTML=P.contact.map(c=>`
+    <div class="group relative rounded-lg overflow-hidden card"
+         style="background:rgba(237,224,204,.03);border:1px solid rgba(237,224,204,.07)">
+      <div class="absolute inset-x-0 top-0 h-px opacity-0 group-hover:opacity-100 transition-opacity"
+           style="background:linear-gradient(90deg,transparent,var(--clay),transparent)"></div>
+      <div class="p-5">
+        <div class="flex items-start gap-3">
+          <span class="text-[17px] opacity-38 group-hover:opacity-62 transition-opacity mt-0.5">${c.icon}</span>
+          <div class="flex-1 min-w-0">
+            <div class="font-mono text-[9px] font-bold tracking-[.18em] uppercase mb-1.5"
+                 style="color:rgba(237,224,204,.2)">${c.label}</div>
+            ${c.href
+              ? `<a href="${c.href}" target="_blank"
+                   class="font-mono text-[11px] font-medium block truncate mb-1 transition-colors"
+                   style="color:var(--clay)"
+                   onmouseover="this.style.color='var(--gold)'"
+                   onmouseout="this.style.color='var(--clay)'">${c.value}</a>`
+              : `<div class="font-mono text-[11px] font-medium truncate mb-1"
+                      style="color:var(--clay)">${c.value}</div>`}
+            ${c.hint?`<div class="font-mono text-[10px] font-light"
+                           style="color:rgba(237,224,204,.2)">${c.hint}</div>`:''}
+          </div>
+        </div>
+      </div>
+    </div>`).join('')
+}
+
+function animateBars(){
+  document.querySelectorAll('.sbar').forEach((b,i)=>setTimeout(()=>{b.style.transform='scaleX(1)'},i*80))
+}
+
+/* ═══ GUI NAV ════════════════════════════════════════════ */
+const navBtns=document.querySelectorAll('.gnl')
+function setActive(idx){
+  navBtns.forEach((b,i)=>{
+    if(i===idx){b.style.background='rgba(200,114,74,.12)';b.style.color='var(--sand)'}
+    else{b.style.background='';b.style.color='rgba(237,224,204,.33)'}
+  })
+}
+navBtns.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.getElementById(`gui-s${btn.dataset.sec}`)?.scrollIntoView({behavior:'smooth',block:'start'})
+    setActive(+btn.dataset.sec)
+  })
+  btn.addEventListener('mouseover',()=>{if(!btn.style.background)btn.style.color='rgba(237,224,204,.62)'})
+  btn.addEventListener('mouseout', ()=>{if(!btn.style.background)btn.style.color='rgba(237,224,204,.33)'})
+})
+guiLayer.addEventListener('scroll',()=>{
+  let a=0;[0,1,2,3].forEach(i=>{
+    const el=document.getElementById(`gui-s${i}`)
+    if(el&&el.getBoundingClientRect().top<110)a=i
+  });setActive(a)
+},{passive:true})
+
+/* ═══ TUI UTILS ══════════════════════════════════════════ */
+const a_=s=>`<span class="fa">${s}</span>`
+const d_=s=>`<span class="fd">${s}</span>`
+const f_=s=>`<span class="ff">${s}</span>`
+const y_=s=>`<span class="fy">${s}</span>`
+const HL=s=>`<span class="thl">${s}</span>`
+const HB=s=>`<span class="thlb">${s}</span>`
+const p2=n=>String(n).padStart(2,'0')
+const drft=(v,lo,hi,sp)=>Math.min(hi,Math.max(lo,v+(Math.random()-.48)*sp))
+
+function getCols(){
+  const el=document.createElement('span')
+  el.style.cssText='position:absolute;visibility:hidden;white-space:pre;font-family:"JetBrains Mono",monospace;font-size:14px;top:0;left:0;pointer-events:none'
+  el.textContent='x'.repeat(200);document.body.appendChild(el)
+  const cw=el.getBoundingClientRect().width/200,aw=document.body.getBoundingClientRect().width
+  document.body.removeChild(el)
+  return Math.max(40,Math.floor(aw/cw))
+}
+
+/* ═══ TUI FRAME ══════════════════════════════════════════ */
+function renderFrame(){
+  if(S.mode==='gui')return
+  const C=getCols(),inner=C-2,lw=MENU_W,rw=inner-lw-1
+  S.cpu=drft(S.cpu,4,44,4); S.mem=drft(S.mem,32,66,2)
+  const now=new Date()
+  const clk=`${p2(now.getHours())}:${p2(now.getMinutes())}:${p2(now.getSeconds())}`
+  const up=Math.floor((Date.now()-P.uptime)/1000)
+  const upS=`up ${p2(Math.floor(up/60))}:${p2(up%60)}`
+  const mL=S.cmdMode?' COMMAND ':'  NORMAL '
+  const tSeg=`─[ ${P.os} ${P.version} ]`
+  tt.innerHTML=a_('┌')+a_(tSeg)+a_('─'.repeat(Math.max(0,inner-tSeg.length)))+a_('┐')
+  const cpu=`${Math.round(S.cpu).toString().padStart(2)}%`, mem=`${Math.round(S.mem).toString().padStart(2)}%`
+  const stats=`  CPU ${cpu}  MEM ${mem}  NET UP`
+  const sf=Math.max(0,inner-1-mL.length-stats.length-upS.length-clk.length-5)
+  ts.innerHTML=a_('│')+HL(mL)+d_(stats)+' '.repeat(sf)+d_(upS+'  ')+f_(clk)+a_('  │')
+  const sec=SECTIONS[S.section], sSeg=`─[ ${sec.icon} ${sec.label.toUpperCase()} ]`
+  tm.innerHTML=a_('├')+a_('─'.repeat(lw))+a_('┬')+a_(sSeg+'─'.repeat(Math.max(0,rw-sSeg.length)))+a_('┤')
+  tb1.innerHTML=a_('├')+a_('─'.repeat(lw))+a_('┴')+a_('─'.repeat(rw))+a_('┤')
+  const th=`[ ${THEMES[S.themeIdx].name} ]`
+  let hp,hh
+  if(S.cmdMode){
+    hp=`:${S.cmdBuf}█`
+    hh=a_(':')+f_(S.cmdBuf)+`<span class="fa cursor">█</span>`
+  } else {
+    hp=`  j/k Move   1-5 Jump   t Theme   g GUI   : Cmd   ? Help  `
+    hh=d_('  ')+y_('j/k')+d_(' Move   ')+y_('1-5')+d_(' Jump   ')+y_('t')+d_(' Theme   ')+y_('g')+d_(' GUI   ')+y_(':')+d_(' Cmd   ')+y_('?')+d_(' Help  ')
+  }
+  const kf=Math.max(0,inner-hp.length-th.length)
+  tk.innerHTML=a_('│')+hh+' '.repeat(kf)+HB(th)+a_('│')
+  tb2.innerHTML=a_('└')+a_('─'.repeat(inner))+a_('┘')
+}
+
+/* ═══ TUI MENU ═══════════════════════════════════════════ */
+function renderMenu(){
+  let h=`<div class="mi-hdr">NAVIGATE</div>`
+  SECTIONS.forEach((s,i)=>{
+    const lbl=` ${s.icon} ${i+1}  ${s.label}`.padEnd(MENU_W-1)
+    h+=`<div class="mi${i===S.section?' act':''}" data-idx="${i}">${lbl}</div>`
+  })
+  h+=`<div class="mi-sep"></div><div class="mi-hdr">APPEARANCE</div>`
+  h+=`<div class="mi" data-action="theme">${(' '+THEMES[S.themeIdx].name).padEnd(MENU_W-1)}</div>`
+  tuiMenu.innerHTML=h
+}
+
+/* ═══ TUI CONTENT ════════════════════════════════════════ */
+const ln=(cls,html)=>`<span class="cl ${cls}">${html}</span>`
+const bl=()=>ln('','')
+const rl=(n=50)=>ln('cd','─'.repeat(n))
+
+function hdr(label){
+  const bar='═'.repeat(label.length+4)
+  return [ln('ca',`╒${bar}╕`),ln('ca',`│  <span class="cb">${label}</span>  │`),ln('ca',`╘${bar}╛`),bl()].join('')
+}
+function mkbar(lv,w=18){
+  const f=Math.round(lv/100*w)
+  return `<span style="color:var(--clay)">${'█'.repeat(f)}</span><span style="color:var(--dim)">${'░'.repeat(w-f)}</span>`
+}
+
+function bAbout(){
+  const a=P.about; let h=''
+  a.ascii.forEach(l=>{h+=ln('ca',l)})
+  h+=bl();h+=ln('cb',`  ${P.name}`);h+=ln('cd',`  ${a.tagline}`)
+  h+=bl();h+=rl(52);h+=bl()
+  a.bio.forEach(l=>{h+=ln('cf',`  ${l}`)})
+  h+=bl()
+  ;[['Education',a.education],['Experience',a.experience],['Location',a.location]].forEach(([k,v])=>{
+    h+=ln('',`  <span class="cd">${k.padEnd(12)}</span><span class="ca">${v}</span>`)
+  })
+  h+=bl();h+=rl(52);h+=bl();h+=ln('cs',`  ${a.status}`)
+  return h
+}
+
+function bSkills(){
+  let h=hdr('TECHNICAL SKILLS')
+  h+=ln('cd',`  ${'SKILL'.padEnd(18)} ${'LEVEL'.padEnd(22)} TOOLS`);h+=ln('cd',`  ${'─'.repeat(60)}`);h+=bl()
+  P.skills.forEach(s=>{
+    h+=ln('',`  <span class="ca bk">▸ ${s.name.toUpperCase().padEnd(15)}</span> ${mkbar(s.level,16)} <span class="cd">${String(s.level).padStart(3)}%</span>`)
+    h+=ln('cd',`      ${s.items.join('  ·  ')}`);h+=bl()
+  })
+  return h
+}
+
+function bProjects(){
+  let h=hdr('PROJECTS')
+  h+=ln('cd',`  ${'NAME'.padEnd(22)}  ${'LANG'.padEnd(10)}  STATUS`);h+=ln('cd',`  ${'─'.repeat(22)}  ${'─'.repeat(10)}  ${'─'.repeat(10)}`);h+=bl()
+  const sm={active:'cs',complete:'ca',archived:'cd'}
+  P.projects.forEach(p=>{
+    h+=ln('',`  <span class="cb">${p.name.padEnd(22)}</span>  <span class="cd">${p.lang.padEnd(10)}</span>  <span class="${sm[p.status]||'cd'}">[${p.status}]</span>`)
+    h+=ln('cd',`  ${'│'.padEnd(22)}  └ ${p.desc}`);h+=bl()
+  })
+  return h
+}
+
+function bContact(){
+  let h=hdr('CONTACT & LINKS')
+  h+=ln('cd','  Reach out — excited to connect and collaborate.');h+=bl()
+  P.contact.forEach(c=>{
+    const lbl=`${c.icon} ${c.label}`.padEnd(12)
+    h+=ln('',`  <span class="cd">${lbl}</span>  <span class="ca bk">${c.value}</span>${c.hint?`  <span class="cd">← ${c.hint}</span>`:''}`)
+  })
+  h+=bl();h+=rl(52);h+=bl();h+=ln('cd','  Open to:')
+  ;['Junior / Mid-level Software Engineering roles','Collaborative open-source projects','Mentorship & knowledge-sharing']
+    .forEach(o=>{h+=ln('cf',`    ▸  ${o}`)})
+  h+=bl();h+=ln('cs','  ✓  Available now')
+  return h
+}
+
+function bHelp(){
+  let h=hdr('HELP & KEYBINDINGS')
+  const grp=(title,binds)=>{
+    h+=ln('cd',`  ── ${title} ${'─'.repeat(Math.max(0,36-title.length))}`);h+=bl()
+    binds.forEach(([k,v])=>{h+=ln('',`  <span class="cy bk">${k.padEnd(18)}</span><span class="cf">${v}</span>`)})
+    h+=bl()
+  }
+  grp('NORMAL MODE',[
+    ['j / ↓','Move selection down'],
+    ['k / ↑','Move selection up'],
+    ['1 – 5','Jump to section'],
+    ['t','Cycle theme'],
+    ['g','Switch to GUI mode'],
+    ['?','Show help'],
+    [':','Enter command mode'],
+  ])
+  grp('COMMAND MODE  ( : )',[
+    [':theme NAME','Switch theme by name'],
+    [':goto N','Jump to section N'],
+    [':gui / :tui','Switch interface mode'],
+    [':help','Show this page'],
+    ['Enter','Execute command'],
+    ['Esc','Cancel'],
+  ])
+  h+=rl(52);h+=bl()
+  h+=ln('cd','  Stack:  HTML · Tailwind CDN · Vanilla JS · JetBrains Mono')
+  return h
+}
+
+const BUILDERS=[bAbout,bSkills,bProjects,bContact,bHelp]
+
+function renderContent(flash=false){
+  tuiContent.innerHTML=BUILDERS[S.section]()
+  tuiContent.scrollTop=0
+  if(flash){
+    tuiContent.style.opacity='0'; void tuiContent.offsetWidth
+    tuiContent.style.transition='opacity 110ms ease'; tuiContent.style.opacity='1'
+    setTimeout(()=>{tuiContent.style.transition=''},130)
+  }
+}
+function renderTui(opts={}){renderFrame();renderMenu();renderContent(opts.flash)}
+
+/* ═══ COMMANDS ═══════════════════════════════════════════ */
+function execCmd(raw){
+  const pts=raw.trim().toLowerCase().split(/\s+/),cmd=pts[0]; let ch=false
+  if(cmd==='theme'&&pts[1]){const i=THEMES.findIndex(t=>t.name.toLowerCase().startsWith(pts[1]));if(i>=0){S.themeIdx=i;applyTheme();ch=true}}
+  else if(cmd==='goto'&&pts[1]){const n=+pts[1]-1;if(n>=0&&n<SECTIONS.length){S.section=n;ch=true}}
+  else if(cmd==='help'){S.section=4;ch=true}
+  else if(cmd==='gui')switchMode('gui')
+  else if(cmd==='tui')switchMode('tui')
+  S.cmdMode=false; S.cmdBuf=''
+  if(S.mode==='tui')renderTui({flash:ch})
+}
+
+function applyTheme(){
+  THEMES.forEach(t=>document.body.classList.remove(t.cls))
+  document.body.classList.add(THEMES[S.themeIdx].cls)
+}
+
+/* ═══ KEYBOARD ═══════════════════════════════════════════ */
+document.addEventListener('keydown',e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey)return
+  if(!S.cmdMode&&e.key==='g'){switchMode(S.mode==='tui'?'gui':'tui');return}
+  if(S.mode==='gui'){if(e.key==='Escape')switchMode('tui');return}
+  if(S.cmdMode){
+    switch(e.key){
+      case 'Escape':S.cmdMode=false;S.cmdBuf='';renderFrame();break
+      case 'Enter':execCmd(S.cmdBuf);break
+      case 'Backspace':S.cmdBuf=S.cmdBuf.slice(0,-1);renderFrame();break
+      default:if(e.key.length===1){S.cmdBuf+=e.key;renderFrame()}
+    };return
+  }
+  let nav=false
+  switch(e.key){
+    case 'j':case 'ArrowDown':S.section=Math.min(S.section+1,SECTIONS.length-1);nav=true;break
+    case 'k':case 'ArrowUp':S.section=Math.max(S.section-1,0);nav=true;break
+    case '1':case '2':case '3':case '4':case '5':S.section=+e.key-1;nav=true;break
+    case 't':S.themeIdx=(S.themeIdx+1)%THEMES.length;applyTheme();renderFrame();renderMenu();return
+    case '?':S.section=4;nav=true;break
+    case ':':S.cmdMode=true;S.cmdBuf='';renderFrame();return
+  }
+  if(nav){renderMenu();renderContent(true);renderFrame()}
+})
+
+/* ═══ TUI MOUSE ══════════════════════════════════════════ */
+tuiMenu.addEventListener('click',e=>{
+  const item=e.target.closest('[data-idx]')
+  if(item){
+    const idx=+item.dataset.idx
+    if(idx!==S.section){S.section=idx;renderMenu();renderContent(true);renderFrame()}
+    return
+  }
+  const action=e.target.closest('[data-action="theme"]')
+  if(action){S.themeIdx=(S.themeIdx+1)%THEMES.length;applyTheme();renderFrame();renderMenu()}
+})
+
+/* ═══ RESIZE + CLOCK ════════════════════════════════════ */
+let _rt
+window.addEventListener('resize',()=>{clearTimeout(_rt);_rt=setTimeout(renderFrame,60)})
+setInterval(renderFrame,1000)
+
+/* ═══ INIT ═══════════════════════════════════════════════ */
+applyTheme()
+buildGui()
+renderTui()
+</script>
+</body>
+</html>
