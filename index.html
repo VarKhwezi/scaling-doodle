@@ -1,851 +1,440 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color:#faf8f5 !important;color-scheme:light only !important">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
 <title>Khwezi Shezi — Software Engineer</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      fontFamily: {
-        mono:    ['"JetBrains Mono"', 'monospace'],
-        display: ['Syne', 'sans-serif'],
-      },
-      keyframes: {
-        'up':    { '0%':{ opacity:'0', transform:'translateY(24px)' }, '100%':{ opacity:'1', transform:'translateY(0)' } },
-        'fade':  { '0%':{ opacity:'0' }, '100%':{ opacity:'1' } },
-        'drift': { '0%,100%':{ transform:'translateY(0px)' }, '50%':{ transform:'translateY(-14px)' } },
-        'ping2': { '75%,100%':{ transform:'scale(2)', opacity:'0' } },
-      },
-      animation: {
-        'up':     'up 0.85s cubic-bezier(0.16,1,0.3,1) both',
-        'up1':    'up 0.85s cubic-bezier(0.16,1,0.3,1) 0.10s both',
-        'up2':    'up 0.85s cubic-bezier(0.16,1,0.3,1) 0.20s both',
-        'up3':    'up 0.85s cubic-bezier(0.16,1,0.3,1) 0.32s both',
-        'fade':   'fade 0.9s ease both',
-        'drift':  'drift 7s ease-in-out infinite',
-        'ping2':  'ping2 1s cubic-bezier(0,0,0.2,1) infinite',
-      },
-    }
-  }
-}
-</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500&family=General+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:14px}
 
-/* ── TOKENS ───────────────────────────────────────────── */
+html{
+  scroll-behavior:smooth;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  color-scheme:light only !important;
+  background-color:#faf8f5 !important;
+}
+
 :root{
-  --bg:    #0f0b08;
-  --bg2:   #160e09;
-  --clay:  #c8724a;
-  --ember: #e8632a;
-  --gold:  #d4a843;
-  --sand:  #ede0cc;
-  --smoke: #7a6a5e;
-  --dim:   #2e1e14;
-  --green: #58bf58;
-  --sw:    400ms;
+  --bg:#faf8f5; --bg2:#f3efe9; --surface:#ffffff;
+  --border:rgba(28,24,20,.07); --border-h:rgba(28,24,20,.13);
+  --ink:#1c1814; --ink-2:#3d3530; --ink-3:#6b5f56; --ink-4:#9e928a; --ink-5:#c4bbb3;
+  --accent:#b85c38; --accent-h:#a04e2e;
+  --accent-bg:rgba(184,92,56,.06); --accent-border:rgba(184,92,56,.14);
+  --teal:#2a8a7a; --teal-bg:rgba(42,138,122,.06); --teal-border:rgba(42,138,122,.14);
+  --indigo:#5b5fc7; --indigo-bg:rgba(91,95,199,.05);
+  --green:#2d9d4a; --green-bg:rgba(45,157,74,.06); --green-border:rgba(45,157,74,.14);
+  --gold:#c49520; --gold-bg:rgba(196,149,32,.06);
 }
-/* Themes on body */
-body.t-gold  { --clay:#c49a30; --ember:#dab040; --gold:#f0cc70; --sand:#f0e8d0; --smoke:#8a7a50; --dim:#3a2e10; }
-body.t-moss  { --clay:#5a8a50; --ember:#4a7042; --gold:#80c060; --sand:#ddeedd; --smoke:#608060; --dim:#1a2e18; }
-body.t-sky   { --clay:#4880c0; --ember:#3870b0; --gold:#70a8e0; --sand:#d8e8f8; --smoke:#5878a0; --dim:#102038; }
-body.t-night { --clay:#9060d0; --ember:#7848c8; --gold:#b890f0; --sand:#e8e0f8; --smoke:#706090; --dim:#1a1030; --bg:#0a0812; --bg2:#100e18; }
 
-body {
-  background:var(--bg);
-  color:var(--sand);
-  font-family:'JetBrains Mono',monospace;
-  overflow-x:hidden;
+@media(prefers-color-scheme:dark){
+  html,html[style]{background-color:#faf8f5 !important;color-scheme:light only !important}
+  body{background-color:#faf8f5 !important;color:#1c1814 !important}
+  :root{
+    --bg:#faf8f5;--bg2:#f3efe9;--surface:#ffffff;
+    --border:rgba(28,24,20,.07);--border-h:rgba(28,24,20,.13);
+    --ink:#1c1814;--ink-2:#3d3530;--ink-3:#6b5f56;--ink-4:#9e928a;--ink-5:#c4bbb3;
+    --accent:#b85c38;--accent-h:#a04e2e;
+    --accent-bg:rgba(184,92,56,.06);--accent-border:rgba(184,92,56,.14);
+    --teal:#2a8a7a;--teal-bg:rgba(42,138,122,.06);--teal-border:rgba(42,138,122,.14);
+    --indigo:#5b5fc7;--indigo-bg:rgba(91,95,199,.05);
+    --green:#2d9d4a;--green-bg:rgba(45,157,74,.06);--green-border:rgba(45,157,74,.14);
+    --gold:#c49520;--gold-bg:rgba(196,149,32,.06);
+  }
+  nav{background-color:rgba(250,248,245,.92) !important}
+  .info-card,.skill-card,.project-card,.contact-card{background-color:#ffffff !important}
+  .cta-block{background-color:#faf5f0 !important}
+  .tag,.skill-track,.project-lang{background-color:#f3efe9 !important}
+  .hero-name-first,.section-heading,.info-card-title,.project-name{color:#1c1814 !important}
+  .hero-bio,.project-desc,.cta-desc{color:#6b5f56 !important}
 }
-/* Grain */
-body::before {
-  content:''; position:fixed; inset:0; z-index:9999; pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  opacity:0.5;
+
+body{
+  background-color:#faf8f5 !important;
+  color:#1c1814 !important;
+  font-family:'General Sans',system-ui,sans-serif;
+  overflow-x:hidden;line-height:1.6;
 }
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--clay);border-radius:2px}
 
-/* ── TRANSITION OVERLAY ──────────────────────────────── */
-#tx{position:fixed;inset:0;z-index:99998;pointer-events:none;background:var(--bg);opacity:0}
-@keyframes tx-go{0%{opacity:0}22%{opacity:.72}100%{opacity:0}}
-#tx.go{animation:tx-go var(--sw) ease forwards}
-
-/* ── MODE BUTTON ─────────────────────────────────────── */
-#mode-btn{
-  position:fixed;top:14px;right:16px;z-index:99999;
-  display:flex;align-items:center;gap:6px;
-  padding:5px 13px 5px 10px;border-radius:5px;
-  border:1px solid var(--clay);
-  background:var(--bg);color:var(--clay);
-  font-family:'JetBrains Mono',monospace;
-  font-size:11px;font-weight:700;letter-spacing:.06em;
-  cursor:pointer;user-select:none;transition:all 120ms ease;
+body::after{
+  content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.015'/%3E%3C/svg%3E");
+  opacity:.4;
 }
-#mode-btn:hover{background:var(--clay);color:var(--bg)}
-body.gui-mode #mode-btn{border-color:rgba(237,224,204,.18);background:rgba(237,224,204,.06);color:rgba(237,224,204,.5)}
-body.gui-mode #mode-btn:hover{background:rgba(237,224,204,.12);color:var(--sand)}
 
-/* ── TUI ─────────────────────────────────────────────── */
-#tui-layer{
-  position:fixed;inset:0;display:flex;flex-direction:column;
-  font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.5;
-  color:var(--sand);z-index:50;background:var(--bg);
-  transition:opacity var(--sw) ease,transform var(--sw) cubic-bezier(.4,0,.2,1);
+::selection{background:rgba(184,92,56,.12);color:#1c1814}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#faf8f5}
+::-webkit-scrollbar-thumb{background:#c4bbb3;border-radius:4px}
+
+@keyframes rise{0%{opacity:0;transform:translateY(28px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translate(0,0) rotate(0deg)}33%{transform:translate(-6px,-10px) rotate(-1deg)}66%{transform:translate(4px,-6px) rotate(.5deg)}}
+@keyframes pulse-ring{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.4);opacity:0}}
+
+.rise{animation:rise .85s cubic-bezier(.16,1,.3,1) both}
+.rise-1{animation:rise .85s cubic-bezier(.16,1,.3,1) .07s both}
+.rise-2{animation:rise .85s cubic-bezier(.16,1,.3,1) .14s both}
+.rise-3{animation:rise .85s cubic-bezier(.16,1,.3,1) .22s both}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+.bar-anim{transform-origin:left;transform:scaleX(0);transition:transform 1s cubic-bezier(.16,1,.3,1)}
+.bar-anim.go{transform:scaleX(1)}
+
+.container{max-width:940px;margin:0 auto;padding:0 24px}
+@media(min-width:640px){.container{padding:0 48px}}
+
+nav{
+  position:sticky;top:0;z-index:100;
+  background-color:rgba(250,248,245,.92) !important;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(28,24,20,.07);
 }
-body.gui-mode #tui-layer{opacity:0;pointer-events:none;transform:scale(.97)}
-#tui-layer::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
-  background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.045) 2px,rgba(0,0,0,.045) 3px);
+.nav-inner{max-width:940px;margin:0 auto;display:flex;align-items:center;height:58px;padding:0 24px;gap:6px}
+@media(min-width:640px){.nav-inner{padding:0 48px}}
+
+.nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none;margin-right:auto}
+.nav-mark{
+  width:32px;height:32px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  background-color:#b85c38 !important;color:#ffffff !important;
+  font-family:'DM Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.02em;
 }
-body.gui-mode #tui-layer::after{opacity:0}
+.nav-name{font-family:'DM Mono',monospace;font-size:12.5px;font-weight:500;color:#3d3530 !important}
 
-.fr-row{white-space:pre;flex-shrink:0;display:block;line-height:1.5;overflow:hidden}
-.fa{color:var(--clay)} .fd{color:var(--smoke)} .ff{color:var(--sand)} .fb{color:var(--sand);font-weight:700}
-.fy{color:var(--gold)} .fs{color:var(--green)}
-.thl{background:var(--clay);color:var(--bg);font-weight:700}
-.thlb{outline:1px solid var(--clay);outline-offset:-1px;color:var(--clay);font-weight:700}
-
-#tui-main{display:flex;flex:1;min-height:0;overflow:hidden}
-.tsb{white-space:pre;color:var(--clay);flex-shrink:0;line-height:1.5}
-#tui-menu{width:22ch;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;padding-top:.25em;background:rgba(8,4,2,.55)}
-.mi{white-space:pre;cursor:pointer;line-height:1.5;padding:0 1ch;color:var(--smoke);user-select:none;transition:color 55ms}
-.mi.act{background:var(--clay);color:var(--bg);font-weight:700}
-.mi:hover:not(.act){color:var(--sand)}
-.mi-sep{height:1px;margin:6px 1ch 3px;background:var(--dim);flex-shrink:0}
-.mi-hdr{white-space:pre;padding:.3em 1ch .1em;color:var(--smoke);font-size:.72em;letter-spacing:.12em;line-height:1.5;flex-shrink:0}
-#tui-content{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--smoke) var(--bg);padding:.75em 3ch 3em;background:rgba(6,3,1,.65)}
-.cl{display:block;white-space:pre;min-height:1.5em;line-height:1.5}
-.ca{color:var(--clay)} .cd{color:var(--smoke)} .cb{color:var(--sand);font-weight:700}
-.cy{color:var(--gold)} .cs{color:var(--green)} .cf{color:var(--sand)} .bk{font-weight:700}
-@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
-.cursor{animation:blink 1s step-end infinite}
-
-/* ── GUI ─────────────────────────────────────────────── */
-#gui-layer{
-  position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;
-  opacity:0;pointer-events:none;transform:scale(1.01);
-  transition:opacity var(--sw) ease,transform var(--sw) cubic-bezier(.4,0,.2,1);
-  font-family:'JetBrains Mono',monospace;
-  scrollbar-width:thin;scrollbar-color:rgba(200,114,74,.18) transparent;
+.nav-link{
+  font-family:'DM Mono',monospace;font-size:11.5px;font-weight:400;
+  color:#9e928a !important;text-decoration:none;
+  padding:6px 14px;border-radius:7px;transition:all .2s ease;
 }
-body.gui-mode #gui-layer{opacity:1;pointer-events:auto;transform:scale(1)}
+.nav-link:hover{color:#3d3530 !important;background-color:rgba(28,24,20,.03) !important}
+.nav-link.active{color:#1c1814 !important;background-color:rgba(28,24,20,.05) !important}
 
-/* Skill bar */
-.sbar{transform-origin:left;transform:scaleX(0);transition:transform 1.1s cubic-bezier(.16,1,.3,1)}
-/* Card */
-.card{transition:transform 200ms ease,border-color 200ms ease}
-.card:hover{transform:translateY(-2px)}
-/* Divider */
-.div{height:1px;background:linear-gradient(90deg,rgba(200,114,74,.35),transparent)}
-/* Dot grid */
-.dot-bg{background-image:radial-gradient(circle,rgba(200,114,74,.055) 1px,transparent 1px);background-size:24px 24px}
+.badge{
+  display:none;align-items:center;gap:7px;
+  padding:5px 13px;border-radius:7px;margin-left:10px;
+  font-family:'DM Mono',monospace;font-size:10px;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:#2d9d4a !important;border:1px solid rgba(45,157,74,.14);
+  background-color:rgba(45,157,74,.06) !important;
+}
+@media(min-width:640px){.badge{display:flex}}
+
+.pulse{position:relative;width:7px;height:7px}
+.pulse::before{content:'';position:absolute;inset:-2px;border-radius:50%;background-color:rgba(45,157,74,.4) !important;animation:pulse-ring 1.4s ease-out infinite}
+.pulse::after{content:'';position:absolute;inset:0;border-radius:50%;background-color:#2d9d4a !important}
+
+.hero{padding:88px 0 72px}
+@media(min-width:640px){.hero{padding:110px 0 88px}}
+
+.hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.hero-line{width:32px;height:2px;background-color:#b85c38 !important;border-radius:1px}
+.hero-label{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#b85c38 !important}
+
+.hero-name{font-weight:800;font-size:clamp(48px,9.5vw,108px);line-height:.9;letter-spacing:-.035em;margin-bottom:24px}
+.hero-name-first{display:block;color:#1c1814 !important}
+.hero-name-last{display:block;color:#b85c38 !important}
+.hero-dot{color:#c49520 !important}
+
+.hero-sub{font-family:'DM Mono',monospace;font-size:11px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:#9e928a !important;margin-bottom:44px}
+
+.hero-grid{display:grid;grid-template-columns:1fr;gap:36px}
+@media(min-width:768px){.hero-grid{grid-template-columns:1fr 250px}}
+
+.hero-bio{font-size:16px;font-weight:300;line-height:1.85;color:#6b5f56 !important;max-width:460px;margin-bottom:32px}
+
+.hero-cta{display:flex;flex-wrap:wrap;gap:10px}
+
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 24px;border-radius:9px;border:none;cursor:pointer;
+  font-family:'DM Mono',monospace;font-size:12px;font-weight:500;
+  letter-spacing:.03em;text-transform:uppercase;text-decoration:none;
+  background-color:#b85c38 !important;color:#ffffff !important;
+  box-shadow:0 1px 3px rgba(184,92,56,.15),0 8px 24px -8px rgba(184,92,56,.2);
+  transition:all .2s ease;
+}
+.btn-primary:hover{background-color:#a04e2e !important;transform:translateY(-1px);box-shadow:0 1px 3px rgba(184,92,56,.2),0 12px 32px -8px rgba(184,92,56,.28)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary svg{width:14px;height:14px;transition:transform .2s}
+.btn-primary:hover svg{transform:translateX(2px)}
+
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 24px;border-radius:9px;cursor:pointer;
+  font-family:'DM Mono',monospace;font-size:12px;font-weight:500;
+  letter-spacing:.03em;text-transform:uppercase;text-decoration:none;
+  background-color:transparent;color:#6b5f56 !important;
+  border:1px solid rgba(28,24,20,.07);transition:all .2s ease;
+}
+.btn-ghost:hover{border-color:rgba(28,24,20,.13);color:#3d3530 !important;background-color:rgba(28,24,20,.02) !important}
+
+.info-stack{display:flex;flex-direction:column;gap:8px}
+.info-card{
+  padding:18px 22px;border-radius:11px;
+  background-color:#ffffff !important;border:1px solid rgba(28,24,20,.07);
+  transition:border-color .2s ease,box-shadow .2s ease;
+}
+.info-card:hover{border-color:rgba(28,24,20,.13);box-shadow:0 2px 12px rgba(28,24,20,.04)}
+.info-card-label{font-family:'DM Mono',monospace;font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#9e928a !important;margin-bottom:5px}
+.info-card-title{font-size:14px;font-weight:700;color:#1c1814 !important;margin-bottom:2px}
+.info-card-sub{font-size:12.5px;font-weight:300;color:#9e928a !important}
+
+.info-card--green{background-color:rgba(45,157,74,.06) !important;border-color:rgba(45,157,74,.14) !important}
+.info-card--green .info-card-title{color:#2d9d4a !important}
+.info-card--green:hover{border-color:rgba(45,157,74,.22) !important}
+
+.status-row{display:flex;align-items:center;gap:8px}
+
+section{padding:68px 0}
+@media(min-width:640px){section{padding:84px 0}}
+
+.divider{height:1px;background:linear-gradient(90deg,rgba(184,92,56,.18),transparent 55%)}
+
+.section-label{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#b85c38 !important;margin-bottom:10px}
+.section-heading{font-weight:800;font-size:clamp(28px,4.5vw,46px);line-height:.96;letter-spacing:-.025em;color:#1c1814 !important}
+.section-heading span{color:#b85c38 !important}
+.section-header{margin-bottom:36px}
+
+.skills-grid{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:480px){.skills-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:768px){.skills-grid{grid-template-columns:repeat(3,1fr)}}
+
+.skill-card{
+  padding:22px;border-radius:11px;
+  background-color:#ffffff !important;border:1px solid rgba(28,24,20,.07);
+  transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease;
+}
+.skill-card:hover{border-color:rgba(28,24,20,.13);box-shadow:0 4px 20px rgba(28,24,20,.05);transform:translateY(-2px)}
+.skill-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.skill-name{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#9e928a !important}
+.skill-pct{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:#b85c38 !important}
+.skill-pct small{font-size:9px;opacity:.5}
+
+.skill-track{height:3px;border-radius:3px;background-color:#f3efe9 !important;margin-bottom:16px;overflow:hidden}
+.skill-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#b85c38,#2a8a7a)}
+
+.skill-tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{
+  display:inline-block;padding:4px 10px;border-radius:6px;
+  font-family:'DM Mono',monospace;font-size:10.5px;font-weight:400;
+  background-color:#f3efe9 !important;color:#6b5f56 !important;
+  border:1px solid transparent;transition:all .18s ease;
+}
+.tag:hover{background-color:rgba(184,92,56,.06) !important;color:#b85c38 !important;border-color:rgba(184,92,56,.14) !important}
+
+.skill-card[data-color="terracotta"] .skill-fill{background:linear-gradient(90deg,#b85c38,#d4835a)}
+.skill-card[data-color="teal"]       .skill-fill{background:linear-gradient(90deg,#2a8a7a,#4ab8a8)}
+.skill-card[data-color="indigo"]     .skill-fill{background:linear-gradient(90deg,#5b5fc7,#8183d8)}
+.skill-card[data-color="gold"]       .skill-fill{background:linear-gradient(90deg,#c49520,#d8b44a)}
+.skill-card[data-color="green"]      .skill-fill{background:linear-gradient(90deg,#3a8a5c,#5cc07a)}
+.skill-card[data-color="plum"]       .skill-fill{background:linear-gradient(90deg,#8a4a7c,#b872a8)}
+
+.projects-list{display:flex;flex-direction:column;gap:8px}
+.project-card{
+  padding:24px 26px;border-radius:11px;position:relative;overflow:hidden;
+  background-color:#ffffff !important;border:1px solid rgba(28,24,20,.07);
+  transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease;
+}
+.project-card:hover{border-color:rgba(28,24,20,.13);box-shadow:0 4px 20px rgba(28,24,20,.05);transform:translateY(-2px)}
+.project-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background-color:#b85c38 !important;border-radius:0 2px 2px 0;
+  transform:scaleY(0);transition:transform .3s cubic-bezier(.16,1,.3,1);transform-origin:center;
+}
+.project-card:hover::before{transform:scaleY(1)}
+
+.project-top{display:flex;flex-direction:column;gap:8px}
+@media(min-width:640px){.project-top{flex-direction:row;align-items:flex-start;justify-content:space-between}}
+
+.project-title-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.project-name{font-size:15px;font-weight:700;color:#1c1814 !important;letter-spacing:.01em}
+
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:6px;font-family:'DM Mono',monospace;font-size:9.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.pill--active{background-color:rgba(45,157,74,.06) !important;border:1px solid rgba(45,157,74,.14);color:#2d9d4a !important}
+.pill--complete{background-color:rgba(184,92,56,.06) !important;border:1px solid rgba(184,92,56,.14);color:#b85c38 !important}
+.pill-dot{width:4px;height:4px;border-radius:50%}
+.pill--active .pill-dot{background-color:#2d9d4a !important}
+.pill--complete .pill-dot{background-color:#b85c38 !important}
+
+.project-lang{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:400;padding:4px 11px;border-radius:6px;background-color:#f3efe9 !important;color:#9e928a !important;flex-shrink:0}
+.project-desc{font-size:13.5px;font-weight:300;line-height:1.75;color:#9e928a !important;margin-top:8px}
+
+.contact-grid{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:640px){.contact-grid{grid-template-columns:repeat(3,1fr)}}
+
+.contact-card{
+  padding:22px;border-radius:11px;
+  background-color:#ffffff !important;border:1px solid rgba(28,24,20,.07);
+  transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease;
+}
+.contact-card:hover{border-color:rgba(28,24,20,.13);box-shadow:0 4px 16px rgba(28,24,20,.04);transform:translateY(-2px)}
+
+.contact-icon{
+  width:36px;height:36px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-family:'DM Mono',monospace;font-weight:500;
+  margin-bottom:14px;transition:all .2s ease;
+}
+.contact-card:nth-child(1) .contact-icon{background-color:rgba(91,95,199,.05) !important;color:#5b5fc7 !important}
+.contact-card:nth-child(2) .contact-icon{background-color:rgba(42,138,122,.06) !important;color:#2a8a7a !important}
+.contact-card:nth-child(3) .contact-icon{background-color:rgba(196,149,32,.06) !important;color:#c49520 !important}
+
+.contact-label{font-family:'DM Mono',monospace;font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#c4bbb3 !important;margin-bottom:5px}
+.contact-value{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:#b85c38 !important;text-decoration:none;display:block;margin-bottom:3px;transition:color .2s;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+a.contact-value:hover{color:#a04e2e !important}
+.contact-hint{font-size:12px;font-weight:300;color:#c4bbb3 !important}
+
+.cta-block{
+  position:relative;overflow:hidden;border-radius:16px;padding:40px;margin-top:14px;
+  background-color:#faf5f0 !important;border:1px solid rgba(184,92,56,.14);
+}
+@media(min-width:640px){.cta-block{padding:48px 52px}}
+.cta-block .orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(60px)}
+.cta-block .orb-1{right:-60px;bottom:-60px;width:200px;height:200px;background-color:#b85c38;opacity:.06}
+.cta-block .orb-2{left:-40px;top:-40px;width:160px;height:160px;background-color:#2a8a7a;opacity:.04}
+
+.cta-status{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.cta-status-text{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#2d9d4a !important}
+.cta-desc{font-size:15.5px;font-weight:300;line-height:1.85;color:#6b5f56 !important;max-width:440px;margin-bottom:28px}
+
+footer{padding:0 0 48px;margin-top:12px}
+.footer-inner{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+@media(min-width:640px){.footer-inner{flex-direction:row;justify-content:space-between;align-items:center}}
+.footer-logo{display:flex;align-items:center;gap:10px}
+.footer-mark{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;background-color:#b85c38 !important;color:#ffffff !important;font-family:'DM Mono',monospace;font-size:9px;font-weight:500}
+.footer-name{font-family:'DM Mono',monospace;font-size:11.5px;color:#c4bbb3 !important}
+.footer-tech{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.05em;color:#c4bbb3 !important;opacity:.5}
+
+.atmo{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+.atmo-shape{position:absolute;border-radius:50%;animation:float 12s ease-in-out infinite}
+.atmo-1{top:-120px;left:-80px;width:480px;height:480px;background:radial-gradient(circle,rgba(184,92,56,.05),transparent 65%)}
+.atmo-2{top:20%;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(42,138,122,.04),transparent 60%);animation-delay:-4s}
+.atmo-3{bottom:10%;left:20%;width:360px;height:360px;background:radial-gradient(circle,rgba(91,95,199,.03),transparent 55%);animation-delay:-8s}
+.atmo-grid{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(28,24,20,.018) 1px,transparent 1px);background-size:28px 28px}
 </style>
 </head>
-<body>
+<body style="background-color:#faf8f5 !important;color:#1c1814 !important">
 
-<button id="mode-btn"><span id="mode-icon">⊞</span><span id="mode-label">GUI</span></button>
-<div id="tx"></div>
+<div class="atmo"><div class="atmo-shape atmo-1"></div><div class="atmo-shape atmo-2"></div><div class="atmo-shape atmo-3"></div><div class="atmo-grid"></div></div>
 
-<!-- ══════ TUI ══════ -->
-<div id="tui-layer">
-  <div id="tt"  class="fr-row"></div>
-  <div id="ts"  class="fr-row"></div>
-  <div id="tm"  class="fr-row"></div>
-  <div id="tui-main">
-    <span class="tsb">│</span>
-    <div id="tui-menu"></div>
-    <span class="tsb">│</span>
-    <div id="tui-content"></div>
-    <span class="tsb">│</span>
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo"><div class="nav-mark">KS</div><span class="nav-name">khwezi.shezi</span></a>
+    <a href="#about" class="nav-link active" data-sec="about">About</a>
+    <a href="#skills" class="nav-link" data-sec="skills">Skills</a>
+    <a href="#projects" class="nav-link" data-sec="projects">Projects</a>
+    <a href="#contact" class="nav-link" data-sec="contact">Contact</a>
+    <div class="badge"><span class="pulse"></span>Available</div>
   </div>
-  <div id="tb1" class="fr-row"></div>
-  <div id="tk"  class="fr-row"></div>
-  <div id="tb2" class="fr-row"></div>
-</div>
+</nav>
 
-<!-- ══════ GUI ══════ -->
-<div id="gui-layer" style="background:var(--bg)">
-
-  <!-- Atmosphere -->
-  <div class="fixed inset-0 pointer-events-none overflow-hidden">
-    <div class="absolute -top-40 -left-40 w-[720px] h-[720px] rounded-full opacity-[0.11] animate-drift"
-         style="background:radial-gradient(circle,var(--ember) 0%,transparent 68%);filter:blur(2px)"></div>
-    <div class="absolute top-0 right-0 w-[380px] h-[380px] rounded-full opacity-[0.06]"
-         style="background:radial-gradient(circle,var(--gold),transparent 70%);transform:translate(38%,-28%)"></div>
-    <div class="dot-bg absolute inset-0 opacity-90"></div>
-    <div class="absolute inset-x-0 bottom-0 h-48 pointer-events-none"
-         style="background:linear-gradient(to top,var(--bg),transparent)"></div>
-  </div>
-
-  <!-- NAV -->
-  <header class="sticky top-0 z-50">
-    <nav class="relative flex items-center gap-1 px-6 sm:px-12 h-[52px]"
-         style="background:rgba(15,11,8,.84);backdrop-filter:blur(20px)">
-      <div class="absolute inset-x-0 bottom-0 h-px"
-           style="background:linear-gradient(90deg,transparent,rgba(200,114,74,.2) 28%,rgba(200,114,74,.2) 72%,transparent)"></div>
-
-      <!-- Logo -->
-      <div class="flex items-center gap-3 mr-5 shrink-0">
-        <div class="w-7 h-7 rounded flex items-center justify-center font-mono text-[11px] font-bold"
-             style="background:var(--clay);color:var(--bg)">KS</div>
-        <span class="font-mono font-semibold text-[12px] hidden sm:block" style="color:var(--sand)">khwezi.shezi</span>
-      </div>
-
-      <!-- Links -->
-      <div class="flex items-center gap-0.5 flex-1" id="gui-nav">
-        <button data-sec="0" class="gnl px-3.5 py-1.5 rounded font-mono text-[11px] font-medium transition-all"
-                style="background:rgba(200,114,74,.12);color:var(--sand)">.about()</button>
-        <button data-sec="1" class="gnl px-3.5 py-1.5 rounded font-mono text-[11px] font-medium transition-all"
-                style="color:rgba(237,224,204,.33)">.skills()</button>
-        <button data-sec="2" class="gnl px-3.5 py-1.5 rounded font-mono text-[11px] font-medium transition-all"
-                style="color:rgba(237,224,204,.33)">.projects()</button>
-        <button data-sec="3" class="gnl px-3.5 py-1.5 rounded font-mono text-[11px] font-medium transition-all"
-                style="color:rgba(237,224,204,.33)">.contact()</button>
-      </div>
-
-      <!-- Available badge -->
-      <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded font-mono text-[10px] font-bold tracking-[.1em] uppercase border"
-           style="border-color:rgba(88,191,88,.22);background:rgba(88,191,88,.05);color:rgba(88,191,88,.75)">
-        <span class="relative flex w-1.5 h-1.5">
-          <span class="animate-ping2 absolute inset-0 rounded-full opacity-60" style="background:rgba(88,191,88,.8)"></span>
-          <span class="relative rounded-full w-1.5 h-1.5" style="background:var(--green)"></span>
-        </span>
-        available
-      </div>
-    </nav>
-  </header>
-
-  <!-- CONTENT -->
-  <main class="relative z-10 max-w-[880px] mx-auto px-6 sm:px-12">
-
-    <!-- ── HERO ───────────────────────────────────────── -->
-    <section id="gui-s0" class="pt-24 pb-24">
-
-      <div class="flex items-center gap-3 mb-7 animate-up">
-        <div class="h-px w-6" style="background:var(--clay)"></div>
-        <span class="font-mono text-[10px] font-semibold tracking-[.22em] uppercase" style="color:var(--clay)">
-          software_engineer · cape_town, za
-        </span>
-      </div>
-
-      <h1 class="font-display font-extrabold leading-[.87] tracking-[-0.02em] mb-7 animate-up1"
-          style="font-size:clamp(54px,9vw,112px)">
-        <span class="block" style="color:var(--sand)">Khwezi</span>
-        <span class="block" style="color:var(--clay)">Shezi<span style="color:var(--gold)">.</span></span>
-      </h1>
-
-      <p class="font-mono text-[10px] font-medium tracking-[.24em] uppercase mb-14 animate-up2"
-         style="color:var(--smoke)">full_stack &nbsp;/&nbsp; mobile &nbsp;/&nbsp; data_engineering</p>
-
-      <div class="grid grid-cols-1 lg:grid-cols-[1fr_234px] gap-10 animate-up3">
-
-        <!-- Bio + CTAs -->
-        <div>
-          <p class="font-mono text-[13px] font-light leading-[1.95] mb-10 max-w-[440px]"
-             style="color:rgba(237,224,204,.46)">
-            A software engineer driven by a passion for problem-solving
-            through creativity and innovation. I excel in collaborative
-            environments, building impactful solutions that matter.
-          </p>
-          <div class="flex flex-wrap gap-3">
-            <a href="#gui-s3"
-               onclick="document.getElementById('gui-s3').scrollIntoView({behavior:'smooth'});return false"
-               class="group inline-flex items-center gap-2 px-5 py-2.5 rounded font-mono font-bold text-[11px] tracking-[.05em] uppercase transition-all duration-200 hover:scale-[1.02] active:scale-[.98]"
-               style="background:var(--clay);color:var(--bg);box-shadow:0 0 32px -10px var(--ember)">
-              connect()
-              <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-            <a href="#gui-s2"
-               onclick="document.getElementById('gui-s2').scrollIntoView({behavior:'smooth'});return false"
-               class="inline-flex items-center gap-2 px-5 py-2.5 rounded font-mono font-medium text-[11px] tracking-[.05em] uppercase border transition-all duration-200"
-               style="border-color:rgba(237,224,204,.1);color:rgba(237,224,204,.4);background:rgba(237,224,204,.03)"
-               onmouseover="this.style.borderColor='rgba(200,114,74,.28)';this.style.color='rgba(237,224,204,.7)'"
-               onmouseout="this.style.borderColor='rgba(237,224,204,.1)';this.style.color='rgba(237,224,204,.4)'">
-              projects()
-            </a>
-          </div>
-        </div>
-
-        <!-- Stat cards -->
-        <div class="flex flex-col gap-2">
-          <div class="relative overflow-hidden rounded-lg p-4 card"
-               style="background:rgba(237,224,204,.03);border:1px solid rgba(237,224,204,.07)">
-            <div class="font-mono text-[9px] font-semibold tracking-[.2em] uppercase mb-1.5" style="color:var(--smoke)">// education</div>
-            <div class="font-mono font-bold text-[13px] mb-0.5" style="color:var(--sand)">WethinkCode_</div>
-            <div class="font-mono text-[11px] font-light" style="color:var(--smoke)">Software Engineering</div>
-          </div>
-          <div class="relative overflow-hidden rounded-lg p-4 card"
-               style="background:rgba(237,224,204,.03);border:1px solid rgba(237,224,204,.07)">
-            <div class="font-mono text-[9px] font-semibold tracking-[.2em] uppercase mb-1.5" style="color:var(--smoke)">// experience</div>
-            <div class="font-mono font-bold text-[13px] mb-0.5" style="color:var(--sand)">MTN · Intern</div>
-            <div class="font-mono text-[11px] font-light" style="color:var(--smoke)">Software Solutions Engineering</div>
-          </div>
-          <div class="relative overflow-hidden rounded-lg p-4 card"
-               style="background:rgba(200,114,74,.07);border:1px solid rgba(200,114,74,.2)">
-            <div class="absolute -top-3 -right-3 w-20 h-20 rounded-full blur-2xl opacity-22"
-                 style="background:var(--clay)"></div>
-            <div class="flex items-center gap-2 mb-1.5">
-              <span class="relative flex w-1.5 h-1.5">
-                <span class="animate-ping2 absolute inset-0 rounded-full opacity-55" style="background:var(--green)"></span>
-                <span class="relative rounded-full w-1.5 h-1.5" style="background:var(--green)"></span>
-              </span>
-              <div class="font-mono text-[9px] font-semibold tracking-[.2em] uppercase" style="color:var(--smoke)">// status</div>
-            </div>
-            <div class="font-mono font-bold text-[13px] mb-0.5" style="color:var(--green)">open_to_work()</div>
-            <div class="font-mono text-[11px] font-light" style="color:var(--smoke)">junior–mid level roles</div>
-          </div>
+<div class="container">
+  <section class="hero" id="about">
+    <div class="hero-eyebrow rise"><div class="hero-line"></div><span class="hero-label">Software Engineer · Cape Town, ZA</span></div>
+    <h1 class="hero-name rise-1"><span class="hero-name-first">Khwezi</span><span class="hero-name-last">Shezi<span class="hero-dot">.</span></span></h1>
+    <p class="hero-sub rise-2">Full-Stack &nbsp;/&nbsp; Mobile &nbsp;/&nbsp; Data Engineering</p>
+    <div class="hero-grid rise-3">
+      <div>
+        <p class="hero-bio">A software engineer driven by a passion for problem-solving through creativity and innovation. I thrive in collaborative environments, building impactful solutions that matter.</p>
+        <div class="hero-cta">
+          <a href="#contact" class="btn-primary">Get in touch <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <a href="#projects" class="btn-ghost">View projects</a>
         </div>
       </div>
-    </section>
-
-    <!-- ── SKILLS ─────────────────────────────────────── -->
-    <section id="gui-s1" class="py-20">
-      <div class="div mb-14"></div>
-      <div class="flex items-end justify-between mb-10">
-        <div>
-          <p class="font-mono text-[10px] font-semibold tracking-[.22em] uppercase mb-3" style="color:var(--clay)">// 01 — skills</p>
-          <h2 class="font-display font-extrabold text-[34px] sm:text-[44px] leading-[.92] tracking-tight" style="color:var(--sand)">
-            Technical<br><span style="color:var(--clay)">Stack.</span>
-          </h2>
-        </div>
-        <p class="hidden sm:block font-mono text-[10px] text-right leading-relaxed" style="color:rgba(237,224,204,.18)">
-          6 domains<br>across the stack
-        </p>
-      </div>
-      <div id="gui-skills" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
-    </section>
-
-    <!-- ── PROJECTS ───────────────────────────────────── -->
-    <section id="gui-s2" class="py-20">
-      <div class="div mb-14"></div>
-      <div class="flex items-end justify-between mb-10">
-        <div>
-          <p class="font-mono text-[10px] font-semibold tracking-[.22em] uppercase mb-3" style="color:var(--clay)">// 02 — projects</p>
-          <h2 class="font-display font-extrabold text-[34px] sm:text-[44px] leading-[.92] tracking-tight" style="color:var(--sand)">
-            Built &amp;<br><span style="color:var(--clay)">Shipped.</span>
-          </h2>
-        </div>
-        <p class="hidden sm:block font-mono text-[10px] text-right leading-relaxed" style="color:rgba(237,224,204,.18)">
-          3 projects<br>shipped to prod
-        </p>
-      </div>
-      <div id="gui-projects" class="flex flex-col gap-2.5"></div>
-    </section>
-
-    <!-- ── CONTACT ────────────────────────────────────── -->
-    <section id="gui-s3" class="py-20">
-      <div class="div mb-14"></div>
-      <div class="mb-10">
-        <p class="font-mono text-[10px] font-semibold tracking-[.22em] uppercase mb-3" style="color:var(--clay)">// 03 — contact</p>
-        <h2 class="font-display font-extrabold text-[34px] sm:text-[44px] leading-[.92] tracking-tight mb-5" style="color:var(--sand)">
-          Let's<br><span style="color:var(--clay)">Talk.</span>
-        </h2>
-        <p class="font-mono text-[13px] font-light max-w-xs leading-[1.9]" style="color:rgba(237,224,204,.34)">
-          Excited to collaborate on meaningful problems.<br>
-          Reach out — always up for a conversation.
-        </p>
-      </div>
-      <div id="gui-contact" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-4"></div>
-
-      <!-- CTA card -->
-      <div class="relative overflow-hidden rounded-xl p-8 sm:p-10 mt-3"
-           style="background:rgba(200,114,74,.07);border:1px solid rgba(200,114,74,.2)">
-        <div class="absolute -right-10 -bottom-10 w-52 h-52 rounded-full blur-3xl opacity-18" style="background:var(--ember)"></div>
-        <div class="relative z-10">
-          <div class="flex items-center gap-2.5 mb-4">
-            <span class="relative flex w-2 h-2">
-              <span class="animate-ping2 absolute inset-0 rounded-full opacity-50" style="background:var(--green)"></span>
-              <span class="relative rounded-full w-2 h-2" style="background:var(--green)"></span>
-            </span>
-            <span class="font-mono text-[10px] font-semibold tracking-[.1em] uppercase" style="color:var(--green)">// currently_available</span>
-          </div>
-          <p class="font-mono text-[13px] font-light leading-[1.9] max-w-md mb-7" style="color:rgba(237,224,204,.56)">
-            Open to junior and mid-level engineering roles.
-            I bring collaborative energy, curiosity, and a drive to
-            grow fast. Let's build something that matters.
-          </p>
-          <a href="https://www.linkedin.com/in/khwezi-shezi-a88714268/" target="_blank"
-             class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded font-mono font-bold text-[11px] tracking-[.05em] uppercase transition-all duration-200 hover:scale-[1.02] active:scale-[.98]"
-             style="background:var(--clay);color:var(--bg);box-shadow:0 0 28px -8px var(--ember)">
-            connect_on_linkedin()
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="relative z-10 pb-10 mt-2">
-    <div class="div mb-7 mx-6 sm:mx-12"></div>
-    <div class="max-w-[880px] mx-auto px-6 sm:px-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-      <div class="flex items-center gap-2.5">
-        <div class="w-5 h-5 rounded flex items-center justify-center font-mono text-[9px] font-bold"
-             style="background:var(--clay);color:var(--bg)">KS</div>
-        <span class="font-mono text-[11px]" style="color:rgba(237,224,204,.28)">Khwezi Shezi</span>
-      </div>
-      <div class="font-mono text-[10px] tracking-[.08em]" style="color:rgba(237,224,204,.14)">
-        JetBrains Mono · Syne · Tailwind · Vanilla JS
+      <div class="info-stack">
+        <div class="info-card"><div class="info-card-label">Education</div><div class="info-card-title">WethinkCode_</div><div class="info-card-sub">Software Engineering</div></div>
+        <div class="info-card"><div class="info-card-label">Experience</div><div class="info-card-title">MTN Software Solutions</div><div class="info-card-sub">Software Engineering Intern</div></div>
+        <div class="info-card info-card--green"><div class="info-card-label"><span class="status-row"><span class="pulse"></span>Status</span></div><div class="info-card-title">Open to Work</div><div class="info-card-sub">Junior – mid-level roles</div></div>
       </div>
     </div>
-  </footer>
+  </section>
 
-</div><!-- /gui-layer -->
+  <section id="skills">
+    <div class="divider"></div>
+    <div class="section-header reveal" style="padding-top:68px"><p class="section-label">// 01 — Skills</p><h2 class="section-heading">Technical<br><span>Stack.</span></h2></div>
+    <div class="skills-grid" id="skills-grid"></div>
+  </section>
+
+  <section id="projects">
+    <div class="divider"></div>
+    <div class="section-header reveal" style="padding-top:68px"><p class="section-label">// 02 — Projects</p><h2 class="section-heading">Built &amp;<br><span>Shipped.</span></h2></div>
+    <div class="projects-list" id="projects-list"></div>
+  </section>
+
+  <section id="contact">
+    <div class="divider"></div>
+    <div class="section-header reveal" style="padding-top:68px">
+      <p class="section-label">// 03 — Contact</p>
+      <h2 class="section-heading" style="margin-bottom:10px">Let's<br><span>Talk.</span></h2>
+      <p style="font-size:14.5px;font-weight:300;color:#9e928a;max-width:360px;line-height:1.8;margin-top:8px">Excited to collaborate on meaningful problems.<br>Reach out — always up for a conversation.</p>
+    </div>
+    <div class="contact-grid reveal" id="contact-grid"></div>
+    <div class="cta-block reveal">
+      <div class="orb orb-1"></div><div class="orb orb-2"></div>
+      <div style="position:relative;z-index:1">
+        <div class="cta-status"><span class="pulse"></span><span class="cta-status-text">Currently Available</span></div>
+        <p class="cta-desc">Open to junior and mid-level engineering roles. I bring collaborative energy, curiosity, and a drive to grow fast. Let's build something that matters.</p>
+        <a href="https://www.linkedin.com/in/khwezi-shezi-a88714268/" target="_blank" class="btn-primary">Connect on LinkedIn <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer><div class="container"><div class="divider" style="margin-bottom:28px"></div><div class="footer-inner"><div class="footer-logo"><div class="footer-mark">KS</div><span class="footer-name">Khwezi Shezi</span></div><div class="footer-tech">General Sans · DM Mono · Vanilla JS</div></div></div></footer>
 
 <script>
-'use strict'
+'use strict';
+const skills=[
+  {name:'Languages',level:80,items:['Python','Java','JavaScript','TypeScript','Bash','SQL'],color:'terracotta'},
+  {name:'Frontend',level:75,items:['React','React Native','HTML/CSS','Front-End Dev'],color:'teal'},
+  {name:'Backend',level:70,items:['Node.js','REST APIs','SQL Databases','Jupyter'],color:'indigo'},
+  {name:'DevOps / Tools',level:68,items:['Docker','Git','GitHub','GitLab','Postman'],color:'gold'},
+  {name:'Data Eng.',level:65,items:['Pandas','SQL','Jupyter','Pipelines'],color:'green'},
+  {name:'Concepts',level:72,items:['TDD','Agile','OOP','CI/CD','System Design'],color:'plum'},
+];
+const projects=[
+  {name:'Alien Invasion Game',lang:'Python',desc:'Arcade-style space shooter — Pygame, game loop, collision detection, scoring & progression system',status:'complete'},
+  {name:'QR Code Tool',lang:'Python',desc:'QR code generator & reader with customisable output formats and batch processing capability',status:'complete'},
+  {name:'Portfolio Site',lang:'HTML/JS',desc:'Refined single-page portfolio with scroll animations, responsive design, zero build step',status:'active'},
+];
+const contacts=[
+  {label:'LinkedIn',value:'linkedin.com/in/khwezi-shezi',hint:'Best for professional reach',icon:'in',href:'https://www.linkedin.com/in/khwezi-shezi-a88714268/'},
+  {label:'GitHub',value:'github.com/VarKhwezi',hint:'Code & contributions',icon:'<>',href:'https://github.com/VarKhwezi'},
+  {label:'Location',value:'Cape Town, WC, SA',hint:'Remote-friendly',icon:'◎',href:null},
+];
 
-/* ═══ DATA ═══════════════════════════════════════════════ */
-const P = {
-  name:'KHWEZI SHEZI', version:'v1.0.0', os:'DEV-OS', uptime:Date.now(),
-  about:{
-    ascii:[
-      ' ██╗  ██╗██╗  ██╗██╗    ██╗███████╗███████╗██╗',
-      ' ██║ ██╔╝██║  ██║██║    ██║██╔════╝╚══███╔╝██║',
-      ' █████╔╝ ███████║██║ █╗ ██║█████╗    ███╔╝ ██║',
-      ' ██╔═██╗ ██╔══██║██║███╗██║██╔══╝   ███╔╝  ██║',
-      ' ██║  ██╗██║  ██║╚███╔███╔╝███████╗███████╗██║',
-      ' ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝╚══════╝╚══════╝╚═╝',
-    ],
-    tagline:'Software Engineer · Cape Town, South Africa',
-    bio:[
-      'Driven by a passion for problem-solving through creativity',
-      'and innovation. I excel in collaborative environments,',
-      'delivering impactful, lasting solutions.',
-    ],
-    education:'WethinkCode_  —  Software Engineering Graduate',
-    experience:'MTN · Software Solutions · Software Engineering Intern',
-    location:'Cape Town, Western Cape, South Africa',
-    status:'[ open to junior / mid-level engineering roles ]',
-  },
-  skills:[
-    {name:'Languages',      level:80, items:['Python','Java','JavaScript','TypeScript','Bash','SQL']},
-    {name:'Frontend',       level:75, items:['React','React Native','HTML/CSS','Front-End Dev']},
-    {name:'Backend',        level:70, items:['Node.js','REST APIs','SQL Databases','Jupyter']},
-    {name:'DevOps / Tools', level:68, items:['Docker','Git','GitHub','GitLab','Postman']},
-    {name:'Data Eng.',      level:65, items:['Pandas','SQL','Jupyter','Pipelines']},
-    {name:'Concepts',       level:72, items:['TDD','Agile','OOP','CI/CD','System Design']},
-  ],
-  projects:[
-    {name:'ALIEN INVASION GAME', lang:'Python',  desc:'Arcade-style space shooter — Pygame, game loop, collision detection, scoring & progression system', status:'complete'},
-    {name:'QR CODE TOOL',        lang:'Python',  desc:'QR code generator & reader with customisable output formats and batch processing capability',        status:'complete'},
-    {name:'PORTFOLIO SITE',      lang:'HTML/JS', desc:'Dual-mode TUI / GUI portfolio with theme switching, keyboard navigation, zero build step',           status:'active'},
-  ],
-  contact:[
-    {label:'LinkedIn', value:'linkedin.com/in/khwezi-shezi',  hint:'Best for professional reach', icon:'◈', href:'https://www.linkedin.com/in/khwezi-shezi-a88714268/'},
-    {label:'GitHub',   value:'github.com/VarKhwezi',          hint:'Code & contributions',        icon:'⌥', href:'https://github.com/VarKhwezi'},
-    {label:'Location', value:'Cape Town, WC, SA',             hint:'Remote-friendly',             icon:'◎', href:null},
-  ],
-}
+document.getElementById('skills-grid').innerHTML=skills.map((s,i)=>`
+  <div class="skill-card reveal" data-color="${s.color}" style="transition-delay:${i*55}ms">
+    <div class="skill-header"><span class="skill-name">${s.name}</span><span class="skill-pct">${s.level}<small>%</small></span></div>
+    <div class="skill-track"><div class="skill-fill bar-anim" style="width:${s.level}%"></div></div>
+    <div class="skill-tags">${s.items.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+  </div>`).join('');
 
-const THEMES=[
-  {cls:'t-ember',name:'Ember'},
-  {cls:'t-gold', name:'Gold'},
-  {cls:'t-moss', name:'Moss'},
-  {cls:'t-sky',  name:'Sky'},
-  {cls:'t-night',name:'Night'},
-]
-const SECTIONS=[
-  {label:'About',   icon:'◉'},
-  {label:'Skills',  icon:'◈'},
-  {label:'Projects',icon:'◆'},
-  {label:'Contact', icon:'◎'},
-  {label:'Help',    icon:'?'},
-]
-const MENU_W=22
+const stMap={active:{cls:'pill--active',label:'Active'},complete:{cls:'pill--complete',label:'Complete'}};
+document.getElementById('projects-list').innerHTML=projects.map((p,i)=>{const st=stMap[p.status];return`
+  <div class="project-card reveal" style="transition-delay:${i*70}ms"><div class="project-top"><div><div class="project-title-row"><span class="project-name">${p.name}</span><span class="pill ${st.cls}"><span class="pill-dot"></span>${st.label}</span></div><p class="project-desc">${p.desc}</p></div><span class="project-lang">${p.lang}</span></div></div>`}).join('');
 
-/* ═══ STATE ══════════════════════════════════════════════ */
-const S={mode:'tui',themeIdx:0,section:0,cmdMode:false,cmdBuf:'',cpu:22,mem:38}
+document.getElementById('contact-grid').innerHTML=contacts.map(c=>`
+  <div class="contact-card reveal"><div class="contact-icon">${c.icon}</div><div class="contact-label">${c.label}</div>${c.href?`<a href="${c.href}" target="_blank" class="contact-value">${c.value}</a>`:`<span class="contact-value">${c.value}</span>`}<span class="contact-hint">${c.hint}</span></div>`).join('');
 
-/* ═══ DOM ════════════════════════════════════════════════ */
-const $=id=>document.getElementById(id)
-const modeIcon=$('mode-icon'), modeLabel=$('mode-label'), txEl=$('tx')
-const tt=$('tt'), ts=$('ts'), tm=$('tm')
-const tuiMenu=$('tui-menu'), tuiContent=$('tui-content')
-const tb1=$('tb1'), tk=$('tk'), tb2=$('tb2')
-const guiLayer=$('gui-layer')
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');e.target.querySelectorAll('.bar-anim').forEach(b=>b.classList.add('go'));observer.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
-/* ═══ MODE ═══════════════════════════════════════════════ */
-function flash(){txEl.classList.remove('go');void txEl.offsetWidth;txEl.classList.add('go')}
-function switchMode(to){
-  if(S.mode===to)return; S.mode=to; flash()
-  if(to==='gui'){
-    document.body.classList.add('gui-mode')
-    modeIcon.textContent='⊟'; modeLabel.textContent='TUI'
-    setTimeout(animateBars,360)
-  } else {
-    document.body.classList.remove('gui-mode')
-    modeIcon.textContent='⊞'; modeLabel.textContent='GUI'
-    renderTui()
-  }
-}
-$('mode-btn').addEventListener('click',()=>switchMode(S.mode==='tui'?'gui':'tui'))
+const navLinks=document.querySelectorAll('.nav-link');
+const secs=['about','skills','projects','contact'];
+function updateNav(){let a='about';secs.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<120)a=id});navLinks.forEach(l=>l.classList.toggle('active',l.dataset.sec===a))}
+window.addEventListener('scroll',updateNav,{passive:true});
 
-/* ═══ GUI BUILD ══════════════════════════════════════════ */
-function buildGui(){
-  /* Skills */
-  $('gui-skills').innerHTML=P.skills.map(s=>`
-    <div class="group relative rounded-lg overflow-hidden card"
-         style="background:rgba(237,224,204,.03);border:1px solid rgba(237,224,204,.07)">
-      <div class="absolute inset-x-0 top-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-           style="background:linear-gradient(90deg,transparent,var(--clay),transparent)"></div>
-      <div class="p-5">
-        <div class="flex items-center justify-between mb-3">
-          <span class="font-mono text-[10px] font-semibold tracking-[.14em] uppercase"
-                style="color:rgba(237,224,204,.36)">${s.name}</span>
-          <span class="font-mono text-[12px] font-bold tabular-nums"
-                style="color:var(--clay)">${s.level}<span class="text-[9px] opacity-55">%</span></span>
-        </div>
-        <div class="h-[2px] rounded-full mb-4 overflow-hidden" style="background:rgba(237,224,204,.06)">
-          <div class="sbar h-full rounded-full"
-               style="background:linear-gradient(90deg,var(--clay),var(--gold));width:${s.level}%"></div>
-        </div>
-        <div class="flex flex-wrap gap-1.5">
-          ${s.items.map(t=>`
-            <span class="font-mono px-2 py-[3px] rounded text-[10px] font-medium cursor-default transition-all duration-150"
-                  style="background:rgba(237,224,204,.04);color:rgba(237,224,204,.28);border:1px solid rgba(237,224,204,.06)"
-                  onmouseover="this.style.background='rgba(200,114,74,.1)';this.style.color='rgba(237,224,204,.7)';this.style.borderColor='rgba(200,114,74,.22)'"
-                  onmouseout="this.style.background='rgba(237,224,204,.04)';this.style.color='rgba(237,224,204,.28)';this.style.borderColor='rgba(237,224,204,.06)'"
-                  >${t}</span>`).join('')}
-        </div>
-      </div>
-      <div class="absolute inset-x-0 bottom-0 h-[2px] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"
-           style="background:linear-gradient(90deg,var(--clay),transparent)"></div>
-    </div>`).join('')
-
-  /* Projects */
-  const SC={
-    active:  {dot:'var(--green)',text:'var(--green)',bg:'rgba(88,191,88,.07)', border:'rgba(88,191,88,.18)', label:'active'},
-    complete:{dot:'var(--clay)', text:'var(--clay)', bg:'rgba(200,114,74,.07)',border:'rgba(200,114,74,.2)', label:'complete'},
-    archived:{dot:'rgba(237,224,204,.2)',text:'rgba(237,224,204,.27)',bg:'rgba(237,224,204,.03)',border:'rgba(237,224,204,.08)',label:'archived'},
-  }
-  $('gui-projects').innerHTML=P.projects.map(p=>{
-    const sc=SC[p.status]||SC.archived
-    return `
-    <div class="group relative rounded-lg overflow-hidden card"
-         style="background:rgba(237,224,204,.03);border:1px solid rgba(237,224,204,.07)">
-      <div class="absolute left-0 inset-y-0 w-[2px] scale-y-0 group-hover:scale-y-100 origin-center transition-transform duration-280"
-           style="background:var(--clay)"></div>
-      <div class="p-5 pl-6">
-        <div class="flex flex-col sm:flex-row sm:items-start gap-3">
-          <div class="flex-1 min-w-0">
-            <div class="flex flex-wrap items-center gap-2 mb-2.5">
-              <span class="font-mono font-bold text-[12px] tracking-[.04em]"
-                    style="color:var(--sand)">${p.name}</span>
-              <span class="inline-flex items-center gap-1.5 px-2 py-[3px] rounded font-mono text-[9px] font-bold tracking-[.1em] uppercase"
-                    style="background:${sc.bg};border:1px solid ${sc.border};color:${sc.text}">
-                <span class="w-1 h-1 rounded-full" style="background:${sc.dot}"></span>${sc.label}
-              </span>
-            </div>
-            <p class="font-mono text-[12px] font-light leading-[1.75]"
-               style="color:rgba(237,224,204,.35)">${p.desc}</p>
-          </div>
-          <span class="font-mono text-[10px] font-medium px-2 py-[3px] rounded shrink-0"
-                style="background:rgba(237,224,204,.05);color:rgba(237,224,204,.27);border:1px solid rgba(237,224,204,.07)">${p.lang}</span>
-        </div>
-      </div>
-    </div>`
-  }).join('')
-
-  /* Contact */
-  $('gui-contact').innerHTML=P.contact.map(c=>`
-    <div class="group relative rounded-lg overflow-hidden card"
-         style="background:rgba(237,224,204,.03);border:1px solid rgba(237,224,204,.07)">
-      <div class="absolute inset-x-0 top-0 h-px opacity-0 group-hover:opacity-100 transition-opacity"
-           style="background:linear-gradient(90deg,transparent,var(--clay),transparent)"></div>
-      <div class="p-5">
-        <div class="flex items-start gap-3">
-          <span class="text-[17px] opacity-38 group-hover:opacity-62 transition-opacity mt-0.5">${c.icon}</span>
-          <div class="flex-1 min-w-0">
-            <div class="font-mono text-[9px] font-bold tracking-[.18em] uppercase mb-1.5"
-                 style="color:rgba(237,224,204,.2)">${c.label}</div>
-            ${c.href
-              ? `<a href="${c.href}" target="_blank"
-                   class="font-mono text-[11px] font-medium block truncate mb-1 transition-colors"
-                   style="color:var(--clay)"
-                   onmouseover="this.style.color='var(--gold)'"
-                   onmouseout="this.style.color='var(--clay)'">${c.value}</a>`
-              : `<div class="font-mono text-[11px] font-medium truncate mb-1"
-                      style="color:var(--clay)">${c.value}</div>`}
-            ${c.hint?`<div class="font-mono text-[10px] font-light"
-                           style="color:rgba(237,224,204,.2)">${c.hint}</div>`:''}
-          </div>
-        </div>
-      </div>
-    </div>`).join('')
-}
-
-function animateBars(){
-  document.querySelectorAll('.sbar').forEach((b,i)=>setTimeout(()=>{b.style.transform='scaleX(1)'},i*80))
-}
-
-/* ═══ GUI NAV ════════════════════════════════════════════ */
-const navBtns=document.querySelectorAll('.gnl')
-function setActive(idx){
-  navBtns.forEach((b,i)=>{
-    if(i===idx){b.style.background='rgba(200,114,74,.12)';b.style.color='var(--sand)'}
-    else{b.style.background='';b.style.color='rgba(237,224,204,.33)'}
-  })
-}
-navBtns.forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.getElementById(`gui-s${btn.dataset.sec}`)?.scrollIntoView({behavior:'smooth',block:'start'})
-    setActive(+btn.dataset.sec)
-  })
-  btn.addEventListener('mouseover',()=>{if(!btn.style.background)btn.style.color='rgba(237,224,204,.62)'})
-  btn.addEventListener('mouseout', ()=>{if(!btn.style.background)btn.style.color='rgba(237,224,204,.33)'})
-})
-guiLayer.addEventListener('scroll',()=>{
-  let a=0;[0,1,2,3].forEach(i=>{
-    const el=document.getElementById(`gui-s${i}`)
-    if(el&&el.getBoundingClientRect().top<110)a=i
-  });setActive(a)
-},{passive:true})
-
-/* ═══ TUI UTILS ══════════════════════════════════════════ */
-const a_=s=>`<span class="fa">${s}</span>`
-const d_=s=>`<span class="fd">${s}</span>`
-const f_=s=>`<span class="ff">${s}</span>`
-const y_=s=>`<span class="fy">${s}</span>`
-const HL=s=>`<span class="thl">${s}</span>`
-const HB=s=>`<span class="thlb">${s}</span>`
-const p2=n=>String(n).padStart(2,'0')
-const drft=(v,lo,hi,sp)=>Math.min(hi,Math.max(lo,v+(Math.random()-.48)*sp))
-
-function getCols(){
-  const el=document.createElement('span')
-  el.style.cssText='position:absolute;visibility:hidden;white-space:pre;font-family:"JetBrains Mono",monospace;font-size:14px;top:0;left:0;pointer-events:none'
-  el.textContent='x'.repeat(200);document.body.appendChild(el)
-  const cw=el.getBoundingClientRect().width/200,aw=document.body.getBoundingClientRect().width
-  document.body.removeChild(el)
-  return Math.max(40,Math.floor(aw/cw))
-}
-
-/* ═══ TUI FRAME ══════════════════════════════════════════ */
-function renderFrame(){
-  if(S.mode==='gui')return
-  const C=getCols(),inner=C-2,lw=MENU_W,rw=inner-lw-1
-  S.cpu=drft(S.cpu,4,44,4); S.mem=drft(S.mem,32,66,2)
-  const now=new Date()
-  const clk=`${p2(now.getHours())}:${p2(now.getMinutes())}:${p2(now.getSeconds())}`
-  const up=Math.floor((Date.now()-P.uptime)/1000)
-  const upS=`up ${p2(Math.floor(up/60))}:${p2(up%60)}`
-  const mL=S.cmdMode?' COMMAND ':'  NORMAL '
-  const tSeg=`─[ ${P.os} ${P.version} ]`
-  tt.innerHTML=a_('┌')+a_(tSeg)+a_('─'.repeat(Math.max(0,inner-tSeg.length)))+a_('┐')
-  const cpu=`${Math.round(S.cpu).toString().padStart(2)}%`, mem=`${Math.round(S.mem).toString().padStart(2)}%`
-  const stats=`  CPU ${cpu}  MEM ${mem}  NET UP`
-  const sf=Math.max(0,inner-1-mL.length-stats.length-upS.length-clk.length-5)
-  ts.innerHTML=a_('│')+HL(mL)+d_(stats)+' '.repeat(sf)+d_(upS+'  ')+f_(clk)+a_('  │')
-  const sec=SECTIONS[S.section], sSeg=`─[ ${sec.icon} ${sec.label.toUpperCase()} ]`
-  tm.innerHTML=a_('├')+a_('─'.repeat(lw))+a_('┬')+a_(sSeg+'─'.repeat(Math.max(0,rw-sSeg.length)))+a_('┤')
-  tb1.innerHTML=a_('├')+a_('─'.repeat(lw))+a_('┴')+a_('─'.repeat(rw))+a_('┤')
-  const th=`[ ${THEMES[S.themeIdx].name} ]`
-  let hp,hh
-  if(S.cmdMode){
-    hp=`:${S.cmdBuf}█`
-    hh=a_(':')+f_(S.cmdBuf)+`<span class="fa cursor">█</span>`
-  } else {
-    hp=`  j/k Move   1-5 Jump   t Theme   g GUI   : Cmd   ? Help  `
-    hh=d_('  ')+y_('j/k')+d_(' Move   ')+y_('1-5')+d_(' Jump   ')+y_('t')+d_(' Theme   ')+y_('g')+d_(' GUI   ')+y_(':')+d_(' Cmd   ')+y_('?')+d_(' Help  ')
-  }
-  const kf=Math.max(0,inner-hp.length-th.length)
-  tk.innerHTML=a_('│')+hh+' '.repeat(kf)+HB(th)+a_('│')
-  tb2.innerHTML=a_('└')+a_('─'.repeat(inner))+a_('┘')
-}
-
-/* ═══ TUI MENU ═══════════════════════════════════════════ */
-function renderMenu(){
-  let h=`<div class="mi-hdr">NAVIGATE</div>`
-  SECTIONS.forEach((s,i)=>{
-    const lbl=` ${s.icon} ${i+1}  ${s.label}`.padEnd(MENU_W-1)
-    h+=`<div class="mi${i===S.section?' act':''}" data-idx="${i}">${lbl}</div>`
-  })
-  h+=`<div class="mi-sep"></div><div class="mi-hdr">APPEARANCE</div>`
-  h+=`<div class="mi" data-action="theme">${(' '+THEMES[S.themeIdx].name).padEnd(MENU_W-1)}</div>`
-  tuiMenu.innerHTML=h
-}
-
-/* ═══ TUI CONTENT ════════════════════════════════════════ */
-const ln=(cls,html)=>`<span class="cl ${cls}">${html}</span>`
-const bl=()=>ln('','')
-const rl=(n=50)=>ln('cd','─'.repeat(n))
-
-function hdr(label){
-  const bar='═'.repeat(label.length+4)
-  return [ln('ca',`╒${bar}╕`),ln('ca',`│  <span class="cb">${label}</span>  │`),ln('ca',`╘${bar}╛`),bl()].join('')
-}
-function mkbar(lv,w=18){
-  const f=Math.round(lv/100*w)
-  return `<span style="color:var(--clay)">${'█'.repeat(f)}</span><span style="color:var(--dim)">${'░'.repeat(w-f)}</span>`
-}
-
-function bAbout(){
-  const a=P.about; let h=''
-  a.ascii.forEach(l=>{h+=ln('ca',l)})
-  h+=bl();h+=ln('cb',`  ${P.name}`);h+=ln('cd',`  ${a.tagline}`)
-  h+=bl();h+=rl(52);h+=bl()
-  a.bio.forEach(l=>{h+=ln('cf',`  ${l}`)})
-  h+=bl()
-  ;[['Education',a.education],['Experience',a.experience],['Location',a.location]].forEach(([k,v])=>{
-    h+=ln('',`  <span class="cd">${k.padEnd(12)}</span><span class="ca">${v}</span>`)
-  })
-  h+=bl();h+=rl(52);h+=bl();h+=ln('cs',`  ${a.status}`)
-  return h
-}
-
-function bSkills(){
-  let h=hdr('TECHNICAL SKILLS')
-  h+=ln('cd',`  ${'SKILL'.padEnd(18)} ${'LEVEL'.padEnd(22)} TOOLS`);h+=ln('cd',`  ${'─'.repeat(60)}`);h+=bl()
-  P.skills.forEach(s=>{
-    h+=ln('',`  <span class="ca bk">▸ ${s.name.toUpperCase().padEnd(15)}</span> ${mkbar(s.level,16)} <span class="cd">${String(s.level).padStart(3)}%</span>`)
-    h+=ln('cd',`      ${s.items.join('  ·  ')}`);h+=bl()
-  })
-  return h
-}
-
-function bProjects(){
-  let h=hdr('PROJECTS')
-  h+=ln('cd',`  ${'NAME'.padEnd(22)}  ${'LANG'.padEnd(10)}  STATUS`);h+=ln('cd',`  ${'─'.repeat(22)}  ${'─'.repeat(10)}  ${'─'.repeat(10)}`);h+=bl()
-  const sm={active:'cs',complete:'ca',archived:'cd'}
-  P.projects.forEach(p=>{
-    h+=ln('',`  <span class="cb">${p.name.padEnd(22)}</span>  <span class="cd">${p.lang.padEnd(10)}</span>  <span class="${sm[p.status]||'cd'}">[${p.status}]</span>`)
-    h+=ln('cd',`  ${'│'.padEnd(22)}  └ ${p.desc}`);h+=bl()
-  })
-  return h
-}
-
-function bContact(){
-  let h=hdr('CONTACT & LINKS')
-  h+=ln('cd','  Reach out — excited to connect and collaborate.');h+=bl()
-  P.contact.forEach(c=>{
-    const lbl=`${c.icon} ${c.label}`.padEnd(12)
-    h+=ln('',`  <span class="cd">${lbl}</span>  <span class="ca bk">${c.value}</span>${c.hint?`  <span class="cd">← ${c.hint}</span>`:''}`)
-  })
-  h+=bl();h+=rl(52);h+=bl();h+=ln('cd','  Open to:')
-  ;['Junior / Mid-level Software Engineering roles','Collaborative open-source projects','Mentorship & knowledge-sharing']
-    .forEach(o=>{h+=ln('cf',`    ▸  ${o}`)})
-  h+=bl();h+=ln('cs','  ✓  Available now')
-  return h
-}
-
-function bHelp(){
-  let h=hdr('HELP & KEYBINDINGS')
-  const grp=(title,binds)=>{
-    h+=ln('cd',`  ── ${title} ${'─'.repeat(Math.max(0,36-title.length))}`);h+=bl()
-    binds.forEach(([k,v])=>{h+=ln('',`  <span class="cy bk">${k.padEnd(18)}</span><span class="cf">${v}</span>`)})
-    h+=bl()
-  }
-  grp('NORMAL MODE',[
-    ['j / ↓','Move selection down'],
-    ['k / ↑','Move selection up'],
-    ['1 – 5','Jump to section'],
-    ['t','Cycle theme'],
-    ['g','Switch to GUI mode'],
-    ['?','Show help'],
-    [':','Enter command mode'],
-  ])
-  grp('COMMAND MODE  ( : )',[
-    [':theme NAME','Switch theme by name'],
-    [':goto N','Jump to section N'],
-    [':gui / :tui','Switch interface mode'],
-    [':help','Show this page'],
-    ['Enter','Execute command'],
-    ['Esc','Cancel'],
-  ])
-  h+=rl(52);h+=bl()
-  h+=ln('cd','  Stack:  HTML · Tailwind CDN · Vanilla JS · JetBrains Mono')
-  return h
-}
-
-const BUILDERS=[bAbout,bSkills,bProjects,bContact,bHelp]
-
-function renderContent(flash=false){
-  tuiContent.innerHTML=BUILDERS[S.section]()
-  tuiContent.scrollTop=0
-  if(flash){
-    tuiContent.style.opacity='0'; void tuiContent.offsetWidth
-    tuiContent.style.transition='opacity 110ms ease'; tuiContent.style.opacity='1'
-    setTimeout(()=>{tuiContent.style.transition=''},130)
-  }
-}
-function renderTui(opts={}){renderFrame();renderMenu();renderContent(opts.flash)}
-
-/* ═══ COMMANDS ═══════════════════════════════════════════ */
-function execCmd(raw){
-  const pts=raw.trim().toLowerCase().split(/\s+/),cmd=pts[0]; let ch=false
-  if(cmd==='theme'&&pts[1]){const i=THEMES.findIndex(t=>t.name.toLowerCase().startsWith(pts[1]));if(i>=0){S.themeIdx=i;applyTheme();ch=true}}
-  else if(cmd==='goto'&&pts[1]){const n=+pts[1]-1;if(n>=0&&n<SECTIONS.length){S.section=n;ch=true}}
-  else if(cmd==='help'){S.section=4;ch=true}
-  else if(cmd==='gui')switchMode('gui')
-  else if(cmd==='tui')switchMode('tui')
-  S.cmdMode=false; S.cmdBuf=''
-  if(S.mode==='tui')renderTui({flash:ch})
-}
-
-function applyTheme(){
-  THEMES.forEach(t=>document.body.classList.remove(t.cls))
-  document.body.classList.add(THEMES[S.themeIdx].cls)
-}
-
-/* ═══ KEYBOARD ═══════════════════════════════════════════ */
-document.addEventListener('keydown',e=>{
-  if(e.ctrlKey||e.metaKey||e.altKey)return
-  if(!S.cmdMode&&e.key==='g'){switchMode(S.mode==='tui'?'gui':'tui');return}
-  if(S.mode==='gui'){if(e.key==='Escape')switchMode('tui');return}
-  if(S.cmdMode){
-    switch(e.key){
-      case 'Escape':S.cmdMode=false;S.cmdBuf='';renderFrame();break
-      case 'Enter':execCmd(S.cmdBuf);break
-      case 'Backspace':S.cmdBuf=S.cmdBuf.slice(0,-1);renderFrame();break
-      default:if(e.key.length===1){S.cmdBuf+=e.key;renderFrame()}
-    };return
-  }
-  let nav=false
-  switch(e.key){
-    case 'j':case 'ArrowDown':S.section=Math.min(S.section+1,SECTIONS.length-1);nav=true;break
-    case 'k':case 'ArrowUp':S.section=Math.max(S.section-1,0);nav=true;break
-    case '1':case '2':case '3':case '4':case '5':S.section=+e.key-1;nav=true;break
-    case 't':S.themeIdx=(S.themeIdx+1)%THEMES.length;applyTheme();renderFrame();renderMenu();return
-    case '?':S.section=4;nav=true;break
-    case ':':S.cmdMode=true;S.cmdBuf='';renderFrame();return
-  }
-  if(nav){renderMenu();renderContent(true);renderFrame()}
-})
-
-/* ═══ TUI MOUSE ══════════════════════════════════════════ */
-tuiMenu.addEventListener('click',e=>{
-  const item=e.target.closest('[data-idx]')
-  if(item){
-    const idx=+item.dataset.idx
-    if(idx!==S.section){S.section=idx;renderMenu();renderContent(true);renderFrame()}
-    return
-  }
-  const action=e.target.closest('[data-action="theme"]')
-  if(action){S.themeIdx=(S.themeIdx+1)%THEMES.length;applyTheme();renderFrame();renderMenu()}
-})
-
-/* ═══ RESIZE + CLOCK ════════════════════════════════════ */
-let _rt
-window.addEventListener('resize',()=>{clearTimeout(_rt);_rt=setTimeout(renderFrame,60)})
-setInterval(renderFrame,1000)
-
-/* ═══ INIT ═══════════════════════════════════════════════ */
-applyTheme()
-buildGui()
-renderTui()
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.getElementById(a.getAttribute('href').slice(1));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
 </script>
 </body>
 </html>
